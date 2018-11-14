@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://https://tlooper.github.io/"/>
-  <updated>2018-11-14T15:50:12.047Z</updated>
+  <updated>2018-11-14T16:03:02.025Z</updated>
   <id>https://https://tlooper.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://https://tlooper.github.io/sup-002/"/>
     <id>https://https://tlooper.github.io/sup-002/</id>
     <published>2018-11-14T13:37:39.000Z</published>
-    <updated>2018-11-14T15:50:12.047Z</updated>
+    <updated>2018-11-14T16:03:02.025Z</updated>
     
     <content type="html"><![CDATA[<h1 id="利用python执行C程序"><a href="#利用python执行C程序" class="headerlink" title="利用python执行C程序"></a>利用python执行C程序</h1><p>　　首先python自己是无法真正意义上地去执行C语言的代码的，但是我们可以转换思路，利用python调用外部程序来实现。</p><h2 id="0-配置环境变量"><a href="#0-配置环境变量" class="headerlink" title="0.配置环境变量"></a>0.配置环境变量</h2><p>　　由于需要调用编译器进行程序的编译运行，故需要在环境变量path中添加编译器地址。</p><blockquote><p>如何找到编译器地址？以codeblocks 为例：在 \CodeBlocks\MinGW\bin 目录下有g++.exe,其他编译器自行手动搜索</p></blockquote><p>　　配置环境变量：此电脑-&gt;属性-&gt;(左侧栏的)高级系统设置-&gt;高级-&gt;环境变量<br>　　双击Path，添加编译器的地址在最后</p><h2 id="1-subprocess-call"><a href="#1-subprocess-call" class="headerlink" title="1.subprocess.call()"></a>1.subprocess.call()</h2><blockquote><p>虽然有个os的模块同样有os.system()函数来实现执行命令行的操作，但是似乎目前已经被subprocess取代了，同时subprocess 模块的使用灵活度比os大得多，所以在此只介绍使用subprocess模块的情况</p></blockquote><p>　　<strong>如果是Linux系统请下载subprocess32,<code>sudo pip install subprocess32</code></strong></p><p>　　显然使用这个函数需要包含<code>subprocess</code>的模块，括号中包含的字符串就是你平时在命令提示符窗口输入的指令，除了字符串似乎还支持list<del>不过我不需要</del>。如果是用codeblocks的话可以看到，在编译运行的时候，运行日志的前两行输出了命令行，代码示例：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line">subprocess.call(<span class="string">"mingw32-gcc.exe   -c test.c -o test.o"</span>)</span><br><span class="line">subprocess.call(<span class="string">"mingw32-g++.exe  -o test.exe test.o"</span>)</span><br></pre></td></tr></table></figure><p>　　Linux下的代码：（确保已经安装g++/gcc）</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subprocess.call(<span class="string">"g++ test.cpp -o test"</span>)</span><br></pre></td></tr></table></figure><p>　　当然光是编译运行是不够的，我们要能执行C程序，还要提供输入与输出。如果是直接用<code>subprocess.call(&quot;test.exe&quot;)</code>，系统默认的输入输出跟python程序的输入输出一样。我们也可以指定从文件输入输出<del>就像是打ACM一样</del>：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line">inp=open(<span class="string">"in.txt"</span>,<span class="string">"r"</span>)</span><br><span class="line">out=open(<span class="string">"res.txt"</span>,<span class="string">"w"</span>)</span><br><span class="line">subprocess.call(<span class="string">"test.exe"</span> , stdin=inp,stdout=out)</span><br></pre></td></tr></table></figure><p>　　</p>]]></content>
     
@@ -34,6 +34,8 @@
     
     </summary>
     
+    
+      <category term="skill" scheme="https://https://tlooper.github.io/tags/skill/"/>
     
   </entry>
   
