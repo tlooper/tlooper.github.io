@@ -70,9 +70,9 @@
     <link href="https://tlooper.github.io/sup-004/"/>
     <id>https://tlooper.github.io/sup-004/</id>
     <published>2019-07-19T03:49:25.000Z</published>
-    <updated>2019-07-21T03:32:56.991Z</updated>
+    <updated>2019-07-26T07:22:03.592Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="docker环境搭建与开发入门"><a class="markdownIt-Anchor" href="#docker环境搭建与开发入门"></a> Docker环境搭建与开发入门</h1><h2 id="0博客参考与引用"><a class="markdownIt-Anchor" href="#0博客参考与引用"></a> 0.博客参考与引用</h2><p><a href="https://www.cnblogs.com/ECJTUACM-873284962/p/9789130.html" target="_blank" rel="noopener">这可能是最为详细的Docker入门吐血总结</a></p><p><a href="https://docs.docker.com/" target="_blank" rel="noopener">Docker 官方文档</a></p><p>##1. Docker简介与架构</p><p>容器：容器技术是和我们的宿主机共享硬件资源及操作系统，可以实现资源的动态分配。容器包含应用和其所有的依赖包，但是与其他容器共享内核。容器在宿主机操作系统中，在用户空间以<strong>分离的进程</strong>运行。<img src="https://img2018.cnblogs.com/blog/1100338/201810/1100338-20181010205426157-1788702025.png" alt="p1"></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="docker环境搭建与开发入门"><a class="markdownIt-Anchor" href="#docker环境搭建与开发入门"></a> Docker环境搭建与开发入门</h1><h2 id="0博客参考与引用"><a class="markdownIt-Anchor" href="#0博客参考与引用"></a> 0.博客参考与引用</h2><p><a href="https://www.cnblogs.com/ECJTUACM-873284962/p/9789130.html" target="_blank" rel="noopener">这可能是最为详细的Docker入门吐血总结</a></p><p><a href="https://docs.docker.com/" target="_blank" rel="noopener">Docker 官方文档</a></p><p>##1. Docker简介与架构</p><p>容器：容器技术是和我们的宿主机共享硬件资源及操作系统，可以实现资源的动态分配。容器包含应用和其所有的依赖包，但是与其他容器共享内核。容器在宿主机操作系统中，在用户空间以<strong>分离的进程</strong>运行。<img src="/sup-004/1.png" alt="p1"></p>]]></content>
     
     <summary type="html">
     
