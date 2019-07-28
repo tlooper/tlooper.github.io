@@ -23,11 +23,101 @@
 <p><em>时间复杂度：O(V^2·E)</em></p>
 <p>模板题：<a href="https://vjudge.net/problem/10499/origin" target="_blank" rel="noopener">POJ - 1273 </a></p>
 <p>AC代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;map&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">202</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> INF=<span class="hljs-number">0x3f3f3f3f</span>;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">edge</span>
+{</span>
+    <span class="hljs-keyword">int</span> to,val,nxt;
+}e[maxn*<span class="hljs-number">2</span>] ;
+<span class="hljs-keyword">int</span> deep[maxn],son[maxn],n,m,coun,s,t;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addedge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> v,<span class="hljs-keyword">int</span> c)</span>
+</span>{
+    e[coun].to=v;e[coun].val=c,e[coun].nxt=son[u];
+    son[u]=coun++;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">memset</span>(deep,<span class="hljs-number">-1</span>,<span class="hljs-keyword">sizeof</span>(deep));
+    <span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt; q;
+    deep[s]=<span class="hljs-number">0</span>;
+    q.push(s);
+    <span class="hljs-keyword">while</span>(!q.empty())
+    {
+        <span class="hljs-keyword">int</span> u=q.front();
+        q.pop();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=son[u];i!=<span class="hljs-number">-1</span>;i=e[i].nxt)
+        {
+            <span class="hljs-keyword">int</span> v=e[i].to;
+            <span class="hljs-keyword">if</span>(deep[v]==<span class="hljs-number">-1</span>&amp;&amp;e[i].val&gt;<span class="hljs-number">0</span>)
+            {
+                deep[v]=deep[u]+<span class="hljs-number">1</span>;
+                q.push(v);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> (deep[t]!=<span class="hljs-number">-1</span>);
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> val)</span>
+</span>{
+    <span class="hljs-keyword">if</span>(u==t)
+        <span class="hljs-keyword">return</span> val;
+    <span class="hljs-keyword">int</span> res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=son[u];i!=<span class="hljs-number">-1</span>;i=e[i].nxt)
+    {
+        <span class="hljs-keyword">int</span> v=e[i].to;
+        <span class="hljs-keyword">if</span>(e[i].val&amp;&amp;deep[u]+<span class="hljs-number">1</span>==deep[v])
+        {
+            <span class="hljs-keyword">int</span> tmp=dfs(e[i].to,min(val,e[i].val));
+            res+=tmp;
+            val-=tmp;
+            e[i].val-=tmp;
+            e[i^<span class="hljs-number">1</span>].val+=tmp;
+            <span class="hljs-keyword">if</span>(val==<span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxflow</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">int</span> res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span>(bfs())
+    {
+        res+=dfs(s,INF);
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-keyword">int</span> u,v,c;
+    <span class="hljs-keyword">while</span>(~<span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;n,&amp;m))
+    {
+        s=<span class="hljs-number">1</span>,t=m;
+        <span class="hljs-built_in">memset</span>(son,<span class="hljs-number">-1</span>,<span class="hljs-keyword">sizeof</span>(son));
+        coun=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)
+        {
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d%d"</span>,&amp;u,&amp;v,&amp;c);
+            addedge(u,v,c);
+            addedge(v,u,<span class="hljs-number">0</span>);
+        }
+        <span class="hljs-comment">/*for(int i=0;i&lt;n;i++)
+        {
+            cout&lt;&lt;e[i].nxt&lt;&lt;' '&lt;&lt;e[i].to&lt;&lt;' '&lt;&lt;e[i].val&lt;&lt;endl;
+        }*/</span>
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d\n"</span>,maxflow());
+    }
+	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
 </li>
-</ol>
-<p class="code-caption" data-lang="cpp" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn=<span class="number">202</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF=<span class="number">0x3f3f3f3f</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> to,val,nxt;</span><br><span class="line">&#125;e[maxn*<span class="number">2</span>] ;</span><br><span class="line"><span class="keyword">int</span> deep[maxn],son[maxn],n,m,coun,s,t;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addedge</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> v,<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    e[coun].to=v;e[coun].val=c,e[coun].nxt=son[u];</span><br><span class="line">    son[u]=coun++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bfs</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(deep,<span class="number">-1</span>,<span class="keyword">sizeof</span>(deep));</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">    deep[s]=<span class="number">0</span>;</span><br><span class="line">    q.push(s);</span><br><span class="line">    <span class="keyword">while</span>(!q.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> u=q.front();</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=son[u];i!=<span class="number">-1</span>;i=e[i].nxt)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> v=e[i].to;</span><br><span class="line">            <span class="keyword">if</span>(deep[v]==<span class="number">-1</span>&amp;&amp;e[i].val&gt;<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                deep[v]=deep[u]+<span class="number">1</span>;</span><br><span class="line">                q.push(v);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (deep[t]!=<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(u==t)</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line">    <span class="keyword">int</span> res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=son[u];i!=<span class="number">-1</span>;i=e[i].nxt)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> v=e[i].to;</span><br><span class="line">        <span class="keyword">if</span>(e[i].val&amp;&amp;deep[u]+<span class="number">1</span>==deep[v])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp=dfs(e[i].to,min(val,e[i].val));</span><br><span class="line">            res+=tmp;</span><br><span class="line">            val-=tmp;</span><br><span class="line">            e[i].val-=tmp;</span><br><span class="line">            e[i^<span class="number">1</span>].val+=tmp;</span><br><span class="line">            <span class="keyword">if</span>(val==<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxflow</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(bfs())</span><br><span class="line">    &#123;</span><br><span class="line">        res+=dfs(s,INF);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> u,v,c;</span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;m))</span><br><span class="line">    &#123;</span><br><span class="line">        s=<span class="number">1</span>,t=m;</span><br><span class="line">        <span class="built_in">memset</span>(son,<span class="number">-1</span>,<span class="keyword">sizeof</span>(son));</span><br><span class="line">        coun=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;u,&amp;v,&amp;c);</span><br><span class="line">            addedge(u,v,c);</span><br><span class="line">            addedge(v,u,<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*for(int i=0;i&lt;n;i++)</span></span><br><span class="line"><span class="comment">        &#123;</span></span><br><span class="line"><span class="comment">            cout&lt;&lt;e[i].nxt&lt;&lt;' '&lt;&lt;e[i].to&lt;&lt;' '&lt;&lt;e[i].val&lt;&lt;endl;</span></span><br><span class="line"><span class="comment">        &#125;*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,maxflow());</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="2">
 <li></li>
 </ol>
 <p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-网络流及其进阶/%20SUP project%20sup-extra 网络流及其进阶" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/sup-003/" title="sup-003 微信小程序开发快速入门"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: sup-003 微信小程序开发快速入门</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-Splay模板/" title="sup-extra HYSBZ-2809 dispatching 左偏树">Next post: sup-extra HYSBZ-2809 dispatching 左偏树&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>

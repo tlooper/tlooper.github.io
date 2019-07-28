@@ -9,5 +9,33 @@ Docker 官方文档
 <p><a href="https://www.cnblogs.com/ECJTUACM-873284962/p/9789130.html" target="_blank" rel="noopener">这可能是最为详细的Docker入门吐血总结</a></p>
 <p><a href="https://docs.docker.com/" target="_blank" rel="noopener">Docker 官方文档</a></p>
 <h2 id="1docker简介与架构"><a class="markdownIt-Anchor" href="#1docker简介与架构"></a> 1.Docker简介与架构</h2>
-<p>容器：容器技术是和我们的宿主机共享硬件资源及操作系统，可以实现资源的动态分配。容器包含应用和其所有的依赖包，但是与其他容器共享内核。容器在宿主机操作系统中，在用户空间以<strong>分离的进程</strong>运行。<img src="/sup-004/1.png" alt="p1"></p>
+<p><strong>容器</strong>：容器技术是和我们的宿主机共享硬件资源及操作系统，可以实现资源的动态分配。容器包含应用和其所有的依赖包，但是与其他容器共享内核。容器在宿主机操作系统中，在用户空间以<strong>分离的进程</strong>运行。<img src="/sup-004/1.png" alt="p1"></p>
+<p><strong>Docker的优势</strong>：更快、更轻量化，有着高可用性，能够快速创建，但同时安全性较差</p>
+<p><strong>Docker架构</strong>：实际上整个docker分为5个部分：</p>
+<ol>
+<li>Docker client</li>
+<li>Docker daemon</li>
+<li>Docker Image</li>
+<li>Docker Registry</li>
+<li>Docker contianer</li>
+</ol>
+<p><strong>Docker Client</strong>:客户端没什么好解释的了吧，就是你能看到的那个命令行窗口，敲指令进去就能帮你执行的那种。</p>
+<p><strong>Docker Daemon</strong>:也就是服务器了，后台守护进程，用来处理Client的各种指令。</p>
+<p><strong>Docker Image</strong>:Docker的镜像，跟系统的镜像有着相似的地方，都是存储着一个docker实例的环境</p>
+<p><strong>Docker Registry</strong>:Docker仓库，用来存放镜像的，可以在本地部署，官方也有public registry可供使用</p>
+<p><strong>Docker Container</strong>:Docker容器，也就是利用镜像生成的一个可执行的实例了。</p>
+<h2 id="2-docker的安装与常用指令"><a class="markdownIt-Anchor" href="#2-docker的安装与常用指令"></a> 2. docker的安装与常用指令</h2>
+<ul>
+<li>docker的安装这个问题建议自己去看文档呢(=・ω・=) <a href="https://docs.docker.com/install/" target="_blank" rel="noopener">官方指南指路</a>,使用官方的这一套流程跟着做虽然是能够提升你的理解啦……但是实在是挺麻烦的。所以建议直接使用github上现成的<a href="https://github.com/docker/docker-install" target="_blank" rel="noopener">环境搭建脚本</a>吧。(这个好像也是官方的？)</li>
+<li><s>关于常用指令呢这边建议亲使用–help自己看呢</s> 当然如果我这么说那就没必要写这个条目了，不过要想清楚地学会使用docker还是要多用–help自己看看能用的指令呢</li>
+<li>docker pull image_name 从仓库拉一个镜像到本地</li>
+<li>docker images 查看主机下有多少的镜像</li>
+<li>docker ps 查看当前运行的容器, -a:查看当前所有的，包括未运行的</li>
+<li>docker start container_name/container_id 启动容器<br>
+docker restart container_name/container_id 重启容器<br>
+docker stop container_name/container_id 停止容器<br>
+docker attach container_name/container_id 进入容器<br>
+docker rm container_name/container_id 删除容器</li>
+<li>docker run [OPTIONS] IMAGE [COMMAND] 从一个镜像中新建一个容器并且可以执行指令。常用的选项： -d 后台执行 -i 开启交互，让输入是关联的 -t 分配一个虚拟终端来让你进行交互 -a 连接容器的输入输出与报错到终端上</li>
+</ul>
 <p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-004/%20SUP project%20sup-004 Docker环境搭建与开发入门" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/sup-extra-主席树/" title="sup-extra 主席树的原理及使用"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: sup-extra 主席树的原理及使用</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-LCA/" title="sup-extra LCA+st表">Next post: sup-extra LCA+st表&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
