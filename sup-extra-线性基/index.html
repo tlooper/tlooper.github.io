@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-extra 线性基 · SUP project</title><meta name="description" content="sup-extra 线性基及部分例题
+ 1.先来讲讲什么是线性基吧
+​	线性基是专门用来处理异或相关问题的一个数的集合，把原先的数的集合中挑出一部分数，利用这些挑出来的数进行相互的异或运算就能得到原先的数。不过实际上这些数能够组合出的数字会比原集合的数字相等或更多，基于这个方面的原因，只有当不考虑集"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-extra 线性基</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2019-08-02</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/ICPC/" title="ICPC" class="a-tag">ICPC</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="sup-extra-线性基及部分例题"><a class="markdownIt-Anchor" href="#sup-extra-线性基及部分例题"></a> sup-extra 线性基及部分例题</h1>
+<h2 id="1先来讲讲什么是线性基吧"><a class="markdownIt-Anchor" href="#1先来讲讲什么是线性基吧"></a> 1.先来讲讲什么是线性基<s>吧</s></h2>
+<p>​	线性基是专门用来处理异或相关问题的一个数的集合，把原先的数的集合中挑出一部分数，利用这些挑出来的数进行相互的异或运算就能得到原先的数。不过实际上这些数能够组合出的数字会比原集合的数字相等或更多，基于这个方面的原因，只有当不考虑集合本来的数而只考虑异或结果的时候会用到线性基。</p>
+<h2 id="2原理"><a class="markdownIt-Anchor" href="#2原理"></a> 2.原理</h2>
+<p>​	那么具体的原理是怎么个原理呢？考虑一下二进制数的性质，当一个数组中存储n个高位均不相同的数字的时候，能够通过异或得到多少个数呢？答案很明显是2<sup>n</sup>，因为显然一个有k位的数只能影响从小到大k位，所以从高位往低位遍历的时候，针对一个数选与不选肯定会得到两个不同的结果，所以最大为64位的数的集合，我们构造线性基的时候只需要选出64个不同的数字就好。</p>
+<p>​	当然光是讲一下构造的原理并不能实际解决问题。针对具体的问题就结合题目来看吧。</p>
+<h2 id="3例题及代码"><a class="markdownIt-Anchor" href="#3例题及代码"></a> 3.例题及代码</h2>
+<h3 id="求异或最大值-bzoj-2460"><a class="markdownIt-Anchor" href="#求异或最大值-bzoj-2460"></a> 求异或最大值 <a href="https://www.lydsy.com/JudgeOnline/problem.php?id=2460" target="_blank" rel="noopener">bzoj 2460</a></h3>
+<p>题意：给你n个石头的编号和权值，让你求出在石头编号异或值最大的情况下能得到的权值。很明显就是要求编号的异或最大值。</p>
+<p>代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> LL;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">100005</span>;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">mine</span>{</span>
+    LL num;
+    LL val;
+}ori[maxn];
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">comp</span><span class="hljs-params">(mine a,mine b)</span></span>{
+    <span class="hljs-keyword">return</span> a.val&gt;b.val;
+}
+LL lis[<span class="hljs-number">70</span>];
+<span class="hljs-keyword">bool</span> havezero;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-built_in">memset</span>(lis,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(lis));
+    havezero=<span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">build</span><span class="hljs-params">(LL x)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">62</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(x&amp;(<span class="hljs-number">1l</span>l&lt;&lt;i)){
+            <span class="hljs-keyword">if</span>(lis[i])
+                x^=lis[i];
+            <span class="hljs-keyword">else</span> {lis[i]=x;<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;}
+        }
+    }
+    havezero=<span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-keyword">int</span> n;
+    <span class="hljs-keyword">while</span>(~<span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;n)){
+            init();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%lld%lld"</span>,&amp;ori[i].num,&amp;ori[i].val);
+        }
+        sort(ori,ori+n,comp);
+        LL res=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;++i){
+            res+=ori[i].val;
+            <span class="hljs-keyword">if</span>(build(ori[i].num)==<span class="hljs-literal">false</span>){
+                res-=ori[i].val;
+            }
+        }
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%lld\n"</span>,res);
+
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+</code></pre>
+<h3 id="求异或第k小-hdu-3949"><a class="markdownIt-Anchor" href="#求异或第k小-hdu-3949"></a> 求异或第k小 <a href="http://acm.hdu.edu.cn/showproblem.php?pid=3949" target="_blank" rel="noopener">hdu 3949</a></h3>
+<p>版题就不谈思路了，第k小求的时候要首先重新处理线性基，使得每位数字都是最小的，这样能够提供的贡献就是2<sup>m</sup>，然后就可以得到第k小了。</p>
+<p>代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> LL;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">100005</span>;
+<span class="hljs-keyword">const</span> LL INFL=<span class="hljs-number">0x3f3f3f3f3f3f3f3f</span>;
+<span class="hljs-keyword">int</span> t,n,q,coun;
+LL lis[<span class="hljs-number">70</span>],sml[<span class="hljs-number">70</span>];
+<span class="hljs-keyword">bool</span> havezero;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-built_in">memset</span>(lis,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(lis));
+    havezero=<span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">build</span><span class="hljs-params">(LL x)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">62</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(x&amp;(<span class="hljs-number">1l</span>l&lt;&lt;i)){
+            <span class="hljs-keyword">if</span>(lis[i]) x^=lis[i];
+            <span class="hljs-keyword">else</span> {
+                lis[i]=x;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+        }
+    }
+    havezero=<span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">rebuild</span><span class="hljs-params">()</span></span>{
+    coun=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">62</span>;i&gt;=<span class="hljs-number">1</span>;--i){<span class="hljs-comment">//i=0的时候必定为1，不用往下异或了</span>
+        <span class="hljs-keyword">if</span>(lis[i]){
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=i<span class="hljs-number">-1</span>;j&gt;=<span class="hljs-number">0</span>;--j){
+                <span class="hljs-keyword">if</span>(lis[i]&amp;(<span class="hljs-number">1l</span>l&lt;&lt;j)){<span class="hljs-comment">//保证有减小</span>
+                    lis[i]^=lis[j];
+                }
+            }
+        }
+    }<span class="hljs-comment">//由于线性基性质+每次只改变后面j位,所以扫一遍就够了</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">62</span>;++i){
+        <span class="hljs-keyword">if</span>(lis[i])
+            sml[coun++]=lis[i];
+    }
+}
+<span class="hljs-function">LL <span class="hljs-title">ksmall</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k)</span></span>{
+    <span class="hljs-keyword">if</span>(havezero) --k;
+    LL res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(k&gt;=(<span class="hljs-number">1l</span>l&lt;&lt;coun)) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=coun;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(k&amp;(<span class="hljs-number">1l</span>l&lt;&lt;i))
+            res^=sml[i];
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;t);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> mark=<span class="hljs-number">1</span>;mark&lt;=t;++mark){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;n);
+        LL mid;
+        init();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%lld"</span>,&amp;mid);
+            build(mid);
+        }
+        rebuild();
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;q);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Case #%d:\n"</span>,mark);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;q;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%lld"</span>,&amp;mid);
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%lld\n"</span>,ksmall(mid));
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<h3 id="xor-bzoj-2115"><a class="markdownIt-Anchor" href="#xor-bzoj-2115"></a> xor <a href="https://www.lydsy.com/JudgeOnline/problem.php?id=2115" target="_blank" rel="noopener">bzoj 2115</a></h3>
+<p>题意：要你找出一条从1到n的路径，使得路径上的权值异或和最大。</p>
+<p>则实际上就是任求一条1到n的路径然后再去得到每个环所能提供的权值，因为走到环里转一圈再回到1点的时候得到的权值就是环的异或和。同时如果有多条到n的路径，则他们之间也能构成环，在跟起始选择的一条进行各种异或后肯定能得到最长的。</p>
+<p>代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> LL;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">100005</span>;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">edge</span>{</span>
+    <span class="hljs-keyword">int</span> to,num;
+    LL val;
+    edge(<span class="hljs-keyword">int</span> t,LL v,<span class="hljs-keyword">int</span> n):to(t),val(v),num(n){}
+    edge(){}
+};
+<span class="hljs-built_in">vector</span>&lt;edge&gt; tree[maxn];
+<span class="hljs-keyword">int</span> n,m,tot;
+LL dis[maxn],circle[maxn*<span class="hljs-number">3</span>];
+<span class="hljs-keyword">bool</span> vis[maxn];
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addedge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> v,LL val,<span class="hljs-keyword">int</span> num)</span></span>{
+    tree[u].push_back(edge(v,val,num));
+    tree[v].push_back(edge(u,val,num));
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> fa)</span></span>{
+    vis[u]=<span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tree[u].size();++i){
+        <span class="hljs-keyword">int</span> v=tree[u][i].to,num=tree[u][i].num;
+        LL val=tree[u][i].val;
+        <span class="hljs-keyword">if</span>(num!=fa){
+            <span class="hljs-keyword">if</span>(!vis[v]){
+                dis[v]=dis[u]^val;
+                dfs(v,num);
+            }
+            <span class="hljs-keyword">else</span>{
+                circle[++tot]=dis[u]^dis[v]^val;
+            }
+        }
+    }
+}
+LL xmxyji[<span class="hljs-number">64</span>];
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">xmxyji_insert</span><span class="hljs-params">(LL k)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">63</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(k&amp;(<span class="hljs-number">1l</span>l&lt;&lt;i)){
+            <span class="hljs-keyword">if</span>(!xmxyji[i]){
+                xmxyji[i]=k;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+            <span class="hljs-keyword">else</span>{
+                k^=xmxyji[i];
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function">LL <span class="hljs-title">getres</span><span class="hljs-params">()</span></span>{
+    LL res=dis[n];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">63</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>((res^xmxyji[i])&gt;res)
+            res^=xmxyji[i];
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-keyword">while</span>(~<span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;n,&amp;m)){
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i){
+            tree[i].clear();
+        }
+        <span class="hljs-built_in">memset</span>(dis,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(dis));
+        <span class="hljs-built_in">memset</span>(vis,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(vis));
+        <span class="hljs-keyword">int</span> a,b;
+        LL c;
+        tot=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d%lld"</span>,&amp;a,&amp;b,&amp;c);
+            addedge(a,b,c,i);
+        }
+        dfs(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+        <span class="hljs-built_in">memset</span>(xmxyji,<span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(xmxyji));
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=tot;++i)
+            xmxyji_insert(circle[i]);
+        LL res=getres();
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%lld\n"</span>,res);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+</code></pre>
+<h3 id="xor-uvalive-8512"><a class="markdownIt-Anchor" href="#xor-uvalive-8512"></a> XOR <a href="https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=810&amp;page=show_problem&amp;problem=6537" target="_blank" rel="noopener">UVALive-8512</a></h3>
+<p>这个题要求区间异或最值，实际上对于每个插入的数字，我们都做一个线性基，并且记录每个数字是第几位的。当有更靠前的数字插入进来时优先替换旧的，这样在求l r区间上的结果时就可以直接遍历r的线性基，把其中位置在l-1及之后的点都抛弃掉。这样就能直接得到结果了。</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> LL;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">100005</span>;
+LL xmxyji[maxn][<span class="hljs-number">64</span>];
+<span class="hljs-keyword">int</span> posi[maxn][<span class="hljs-number">64</span>];
+LL k_seperate[<span class="hljs-number">64</span>],tot,n,q,k;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num,LL val)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tot;++i){
+        <span class="hljs-keyword">if</span>(val&amp;k_seperate[i]){
+            val-=k_seperate[i];
+        }
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">64</span>;++i){
+        xmxyji[num][i]=xmxyji[num<span class="hljs-number">-1</span>][i];
+        posi[num][i]=posi[num<span class="hljs-number">-1</span>][i];
+    }
+
+    <span class="hljs-keyword">int</span> nown=num;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">63</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(val&amp;(<span class="hljs-number">1</span>&lt;&lt;i))
+            <span class="hljs-keyword">if</span>(xmxyji[num][i]){
+                    <span class="hljs-keyword">if</span>(posi[num][i]&lt;nown){
+                    swap(xmxyji[num][i],val);
+                    swap(posi[num][i],nown);
+                    }
+                val^=xmxyji[num][i];
+            }
+            <span class="hljs-keyword">else</span>{
+                xmxyji[num][i]=val;
+                posi[num][i]=nown;
+                <span class="hljs-keyword">return</span>;
+            }
+
+    }
+}
+<span class="hljs-function">LL <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    LL res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">63</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(posi[r][i]&gt;=l){
+            <span class="hljs-keyword">if</span>((xmxyji[r][i]^res)&gt;res){
+                res^=xmxyji[r][i];
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> res|k;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-keyword">int</span> t;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;t);
+    <span class="hljs-keyword">while</span>(t--){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%lld%lld%lld"</span>,&amp;n,&amp;q,&amp;k);
+        tot=<span class="hljs-number">0</span>;
+        LL tmp=k;
+        <span class="hljs-keyword">while</span>(tmp){
+            k_seperate[tot++]=tmp&amp;(-tmp);
+            tmp-=tmp&amp;(-tmp);
+        }
+        <span class="hljs-built_in">memset</span>(xmxyji,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(xmxyji));
+        <span class="hljs-built_in">memset</span>(posi,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(posi));
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%lld"</span>,&amp;tmp);
+            build(i,tmp);
+        }
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;q;++i){
+            <span class="hljs-keyword">int</span> a,b;
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;a,&amp;b);
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%lld\n"</span>,query(a,b));
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-线性基/%20SUP project%20sup-extra 线性基" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/sup-005/" title="sup-005 动态博客搭建"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: sup-005 动态博客搭建</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-ICPCtemplate/" title="sup-extra 代码模板">Next post: sup-extra 代码模板&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://tlooper.github.io/"/>
-  <updated>2019-07-27T11:07:59.137Z</updated>
+  <updated>2019-08-03T02:56:06.841Z</updated>
   <id>https://tlooper.github.io/</id>
   
   <author>
@@ -17,11 +17,61 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>sup-005 动态博客搭建</title>
+    <link href="https://tlooper.github.io/sup-005/"/>
+    <id>https://tlooper.github.io/sup-005/</id>
+    <published>2019-08-03T02:10:00.000Z</published>
+    <updated>2019-08-03T02:56:06.841Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;动态博客搭建&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#动态博客搭建&quot;&gt;&lt;/a&gt; 动态博客搭建&lt;/h1&gt;
+&lt;h2 id=&quot;0前言&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#0前言&quot;&gt;&lt;/a&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="produce" scheme="https://tlooper.github.io/tags/produce/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sup-extra 线性基</title>
+    <link href="https://tlooper.github.io/sup-extra-%E7%BA%BF%E6%80%A7%E5%9F%BA/"/>
+    <id>https://tlooper.github.io/sup-extra-线性基/</id>
+    <published>2019-08-02T08:45:00.000Z</published>
+    <updated>2019-08-03T02:23:49.524Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;sup-extra-线性基及部分例题&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#sup-extra-线性基及部分例题&quot;&gt;&lt;/a&gt; sup-extra 线性基及部分例题&lt;/h1&gt;
+&lt;h2 id=&quot;1先来讲讲什么是线性基吧&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="ICPC" scheme="https://tlooper.github.io/tags/ICPC/"/>
+    
+  </entry>
+  
+  <entry>
     <title>sup-extra 代码模板</title>
     <link href="https://tlooper.github.io/sup-extra-ICPCtemplate/"/>
     <id>https://tlooper.github.io/sup-extra-ICPCtemplate/</id>
     <published>2019-07-26T07:14:00.000Z</published>
-    <updated>2019-07-27T11:07:59.137Z</updated>
+    <updated>2019-08-02T08:13:23.667Z</updated>
     
     <summary type="html">
     
@@ -71,7 +121,7 @@
     <link href="https://tlooper.github.io/sup-004/"/>
     <id>https://tlooper.github.io/sup-004/</id>
     <published>2019-07-19T03:49:25.000Z</published>
-    <updated>2019-07-28T09:27:36.498Z</updated>
+    <updated>2019-07-28T09:40:51.456Z</updated>
     
     <summary type="html">
     
@@ -96,7 +146,7 @@
     <link href="https://tlooper.github.io/sup-extra-LCA/"/>
     <id>https://tlooper.github.io/sup-extra-LCA/</id>
     <published>2019-05-05T13:04:24.000Z</published>
-    <updated>2019-05-12T05:16:14.266Z</updated>
+    <updated>2019-07-29T05:45:19.347Z</updated>
     
     <summary type="html">
     

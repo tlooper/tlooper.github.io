@@ -65,7 +65,7 @@ LL dis[maxn],dep[maxn];
 }
 </code></pre>
 <p><strong>3.LCA转化为RMQ问题</strong></p>
-<p>​	<strong>基本思想</strong>：与Tarjan求法的思想一致，当你从a遍历到b时经过的深度最小的点即为最近公共祖先。之所以能转化为RMQ，是将DFS时产生长度为2<em>n-1的欧拉序列~~（实际上就是每经过一个点就标一个号，不管是初次访问还是回退时，所以每个点访问两次）~~当做一个区间，记录每一个点的初次出现的编号first[i]，然后找first[a]到first[b]这段区间中</em>深度最浅的点。（<a href="https://blog.csdn.net/diogenes_/article/details/81412316" target="_blank" rel="noopener">参考博客</a>）</p>
+<p>​	<strong>基本思想</strong>：与Tarjan求法的思想一致，当你从a遍历到b时经过的深度最小的点即为最近公共祖先。之所以能转化为RMQ，是将DFS时产生长度为2 * n - 1的欧拉序列（实际上就是每经过一个点就标一个号，不管是初次访问还是回退时，所以每个点访问两次）当做一个区间，记录每一个点的初次出现的编号<code>first [ i ]</code> , 然后找<code>first [a]</code> 到 <code>first [b]</code> 这段区间中深度最浅的点。<a href="https://blog.csdn.net/diogenes_/article/details/81412316" target="_blank" rel="noopener">参考博客</a></p>
 <p>​	<strong>具体操作及代码</strong>见st表部分</p>
 <h2 id="2st表"><a class="markdownIt-Anchor" href="#2st表"></a> 2.st表</h2>
 <p>​	<strong>基本思想</strong>：st表与LCA动态倍增算法相似，均是采用的二进制思想，用st [ i ] [ j ]数组来存储 i 到 i+2<sup>j</sup>-1,共2<sup>j</sup>长度的区间上的最值问题。预处理时间复杂度为O（nlogn) 查询时间为 O(1)，并不支持在线修改。所以基本上就是用来求区间最值的。</p>
