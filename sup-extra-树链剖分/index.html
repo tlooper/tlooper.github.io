@@ -8,5 +8,319 @@
 <p>​	该说不愧是数据结构问题吗……写起来代码量意外的大啊……并且枯燥程度也不低啊……不过说实话还是很锻炼人的。</p>
 <h2 id="使用范围与思路"><a class="markdownIt-Anchor" href="#使用范围与思路"></a> 使用范围与思路</h2>
 <p>​	基本上树上问题的解决还是离不开dfs与bfs啊。如果说lca解决的是两点间的最近父节点的问题，那树链剖分解决的就是两点间路径上的问题。不过解决的基本上都是点权问题，（反正树的节点联到父节点的边只有一条，点权边权没区别的吧？转换一下就好），然后诸如区间最值啊，区间和啊等等各种线段树能解决的问题都能解决。或者不如说树链剖分就是把树上的问题，转换成了线段树能处理的区间数的问题。</p>
-<p>​	树链剖分需要掌握的前置知识就是dfs序。这里也提一下dfs序和欧拉序列的区别。两者非常相似，都是按照dfs的顺序来确定点的编号，但dfs序只在访问到点a的时候给点a一个序号，而欧拉序列则会在点b访问结束回退到点a的时候再度给点a一个值。这导致了dfs序中每个点只会出现一次，整体长度为n，而欧拉序列由于一进一出，最终长度为 2 * n -1。欧拉序列的应用可以见<a href="/sup-exra-LCA/">RMQ转LCA问题</a></p>
+<p>​	树链剖分需要掌握的前置知识就是dfs序。这里也提一下dfs序和欧拉序列的区别。两者非常相似，都是按照dfs的顺序来确定点的编号，但dfs序只在访问到点a的时候给点a一个序号，而欧拉序列则会在点b访问结束回退到点a的时候再度给点a一个值。这导致了dfs序中每个点只会出现一次，整体长度为n，而欧拉序列由于一进一出，最终长度为 2 * n -1。欧拉序列的应用可以见<a href="/sup-extra-LCA/">RMQ转LCA问题</a></p>
+<p>​	树链剖分的使用主要分为两部分，首先是将树分解成链，然后针对各种树上的询问要转换成链上的询问，抛给线段树或树状数组或别的什么来解决。</p>
+<p>​	**将树分解成链的部分 **：使用两次dfs，第一次需要处理出针对每个父节点的重儿子，同时初始化节点的一些通用属性（比如深度、父亲）。第二次则是构成dfs序。构成dfs序的时候要针对点赋值对应编号，针对编号赋值相应的权值，赋值该点的链头，并且优先dfs重儿子，来保持重链的性质。其他的轻链链头就是自身了，dfs一下随便赋个值就好。<strong>另外要注意判断有没有重儿子再往下dfs。</strong></p>
+<p>​	<strong>转换树上询问的部分</strong>：写这个地方的函数可以说是非常难受了。首先你要判断询问的a b两点的链头相同不相同，不相同的情况下就挑链头深度更深的链，解决链头到链上节点的询问，然后我们从链头跳到链头的父节点，来到了新的链上，重复刚才的判断。当新的a b 到了同一条链上时就能通过点深度来解决询问了。</p>
+<p>​	树链剖分题目做了几道，整体感觉难点一来是代码非常长，要考虑的问题非常多，比较容易有细节上的错误；二来就是比较考验你的线段树功力，线段树作为真正解决问题的部分，如果写的不太行那树链剖分多么正确也没用。</p>
+<h2 id="题目及代码"><a class="markdownIt-Anchor" href="#题目及代码"></a> 题目及代码</h2>
+<h3 id="树的统计count-hysbz-1036"><a class="markdownIt-Anchor" href="#树的统计count-hysbz-1036"></a> 树的统计Count <a href="https://vjudge.net/problem/24279/origin" target="_blank" rel="noopener">HYSBZ - 1036 </a></h3>
+<p>单点修改+区间最值，真的版题</p>
+<p>代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> LL;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">100005</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> INF=<span class="hljs-number">0x3f3f3f3f</span>;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Node</span>{</span>
+    <span class="hljs-keyword">int</span> fa,son;
+    <span class="hljs-keyword">int</span> deep,siz;
+    <span class="hljs-keyword">int</span> val;
+    <span class="hljs-keyword">int</span> top, pos;
+}node[maxn];
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; tree[maxn];<span class="hljs-comment">//反正边的信息在转换成区间后就不需要了</span>
+<span class="hljs-comment">//随便拿个vector存一下吧</span>
+<span class="hljs-keyword">int</span> dfsarray[maxn],tot;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> fa)</span></span>{<span class="hljs-comment">//第一个DFS用来处理出重儿子，并且从vector中得到树的父亲与深度信息</span>
+    node[u].fa=fa;
+    node[u].son=<span class="hljs-number">0</span>;
+    node[u].siz=<span class="hljs-number">1</span>;
+    node[u].deep=node[fa].deep+<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tree[u].size();++i){
+        <span class="hljs-keyword">int</span> v=tree[u][i];
+        <span class="hljs-keyword">if</span>(v!=fa) {
+            dfs1(v,u);
+            node[u].siz+=node[v].siz;
+            <span class="hljs-keyword">if</span>(node[node[u].son].siz&lt;node[v].siz){
+                node[u].son=v;
+            }
+        }
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs2</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> fa,<span class="hljs-keyword">int</span> ancient)</span></span>{
+    node[u].top=ancient;
+    node[u].pos=++tot;
+    dfsarray[tot]=node[u].val;
+    <span class="hljs-keyword">if</span>(node[u].son)
+        dfs2(node[u].son,u,ancient);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tree[u].size();++i){
+        <span class="hljs-keyword">int</span> v=tree[u][i];
+        <span class="hljs-keyword">if</span>(v!=fa&amp;&amp;v!=node[u].son){
+            dfs2(v,u,v);
+        }
+    }
+}
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">line</span>{</span>
+    <span class="hljs-keyword">int</span> l,r,sum,max;
+}ltree[maxn&lt;&lt;<span class="hljs-number">2</span>];<span class="hljs-comment">//真的刺激，晚上再写吧</span>
+<span class="hljs-comment">//结果不仅晚上没写第二天也没写</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r,<span class="hljs-keyword">int</span> k)</span></span>{
+    ltree[k].l=l,ltree[k].r=r;
+    <span class="hljs-keyword">if</span>(l==r){
+        ltree[k].sum=dfsarray[l];
+        ltree[k].max=dfsarray[l];
+        <span class="hljs-keyword">return</span> ;
+    }
+    <span class="hljs-keyword">else</span>{
+        <span class="hljs-keyword">int</span> mid=(l+r)&gt;&gt;<span class="hljs-number">1</span>;
+        build(l,mid,k&lt;&lt;<span class="hljs-number">1</span>);
+        build(mid+<span class="hljs-number">1</span>,r,k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>);
+        ltree[k].sum=ltree[k&lt;&lt;<span class="hljs-number">1</span>].sum+ltree[k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>].sum;
+        ltree[k].max=max(ltree[k&lt;&lt;<span class="hljs-number">1</span>].max,ltree[k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>].max);
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">change</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k,<span class="hljs-keyword">int</span> val,<span class="hljs-keyword">int</span> loca)</span></span>{
+    <span class="hljs-keyword">if</span>(ltree[k].l==ltree[k].r) {
+        ltree[k].sum=val;
+        ltree[k].max=val;
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">int</span> mid=(ltree[k].l+ltree[k].r)&gt;&gt;<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(loca&lt;=mid) change(k&lt;&lt;<span class="hljs-number">1</span>,val,loca);
+    <span class="hljs-keyword">else</span> change(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,val,loca);
+    ltree[k].sum=ltree[k&lt;&lt;<span class="hljs-number">1</span>].sum+ltree[k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>].sum;
+    ltree[k].max=max(ltree[k&lt;&lt;<span class="hljs-number">1</span>].max,ltree[k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>].max);
+
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">qsum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    <span class="hljs-keyword">if</span>(ltree[k].l==l&amp;&amp;ltree[k].r==r) <span class="hljs-keyword">return</span> ltree[k].sum;
+    <span class="hljs-keyword">int</span> mid=(ltree[k].l+ltree[k].r)&gt;&gt;<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(r&lt;=mid) <span class="hljs-keyword">return</span> qsum(k&lt;&lt;<span class="hljs-number">1</span>,l,r);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(l&gt;mid) <span class="hljs-keyword">return</span> qsum(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,l,r);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> qsum(k&lt;&lt;<span class="hljs-number">1</span>,l,mid)+qsum(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r);
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">qmax</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    <span class="hljs-keyword">if</span>(ltree[k].l==l&amp;&amp;ltree[k].r==r) <span class="hljs-keyword">return</span> ltree[k].max;
+    <span class="hljs-keyword">int</span> mid=(ltree[k].l+ltree[k].r)&gt;&gt;<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(r&lt;=mid) <span class="hljs-keyword">return</span> qmax(k&lt;&lt;<span class="hljs-number">1</span>,l,r);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(l&gt;mid) <span class="hljs-keyword">return</span> qmax(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,l,r);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> max(qmax(k&lt;&lt;<span class="hljs-number">1</span>,l,mid),qmax(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r));
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sum_skip</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">int</span> b)</span></span>{
+    <span class="hljs-keyword">int</span> res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span>(node[a].top!=node[b].top){
+        <span class="hljs-keyword">int</span> aa=node[a].top,bb=node[b].top;
+        <span class="hljs-keyword">if</span>(node[aa].deep&lt;node[bb].deep) swap(a,b);
+        res+=qsum(<span class="hljs-number">1</span>,node[aa].pos,node[a].pos);
+        a=node[a].top;
+    }
+    <span class="hljs-keyword">if</span>(node[a].deep&lt;node[b].deep) swap(a,b);
+    res+=qsum(<span class="hljs-number">1</span>,node[b].pos,node[a].pos);
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">max_skip</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">int</span> b)</span></span>{
+    <span class="hljs-keyword">int</span> res=-INF;
+    <span class="hljs-keyword">while</span>(node[a].top!=node[b].top){
+        <span class="hljs-keyword">int</span> aa=node[a].top,bb=node[b].top;
+        <span class="hljs-keyword">if</span>(node[aa].deep&lt;node[bb].deep) swap(a,b);
+        res=max(qmax(<span class="hljs-number">1</span>,node[aa].pos,node[a].pos),res);
+        a=node[a].top;
+    }
+    <span class="hljs-keyword">if</span>(node[a].deep&lt;node[b].deep) swap(a,b);
+    res=max(qmax(<span class="hljs-number">1</span>,node[b].pos,node[a].pos),res);
+    <span class="hljs-keyword">return</span> res;
+}
+<span class="hljs-keyword">int</span> n;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-keyword">while</span>(~<span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;n)){
+        <span class="hljs-keyword">int</span> a,b;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;n;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;a,&amp;b);
+            tree[a].push_back(b);
+            tree[b].push_back(a);
+        }
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;node[i].val);
+        }
+        node[<span class="hljs-number">0</span>].deep=<span class="hljs-number">0</span>;
+        dfs1(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+        dfs2(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);
+        build(<span class="hljs-number">1</span>,n,<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">int</span> q;
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;q);
+        <span class="hljs-keyword">while</span>(q--){
+            <span class="hljs-keyword">char</span> com[<span class="hljs-number">10</span>];
+            <span class="hljs-keyword">int</span> a,b;
+            <span class="hljs-keyword">int</span> res;
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%s%d%d"</span>,com,&amp;a,&amp;b);
+            <span class="hljs-keyword">if</span>(com[<span class="hljs-number">1</span>]==<span class="hljs-string">'H'</span>){
+                change(<span class="hljs-number">1</span>,b,node[a].pos);
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(com[<span class="hljs-number">1</span>]==<span class="hljs-string">'M'</span>){
+
+                <span class="hljs-keyword">if</span>(node[a].pos&lt;node[b].pos)
+                    res=qmax(<span class="hljs-number">1</span>,node[a].pos,node[b].pos);
+                <span class="hljs-keyword">else</span> res=qmax(<span class="hljs-number">1</span>,node[b].pos,node[a].pos);
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d\n"</span>,res);
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(com[<span class="hljs-number">1</span>]==<span class="hljs-string">'S'</span>){
+                <span class="hljs-keyword">if</span>(node[a].pos&lt;node[b].pos)
+                    res=qsum(<span class="hljs-number">1</span>,node[a].pos,node[b].pos);
+                <span class="hljs-keyword">else</span> res=qsum(<span class="hljs-number">1</span>,node[b].pos,node[a].pos);
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d\n"</span>,res);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<h3 id="query-on-a-tree-again-spoj-qtree3"><a class="markdownIt-Anchor" href="#query-on-a-tree-again-spoj-qtree3"></a> Query on a tree again! <a href="https://vjudge.net/problem/806116/origin" target="_blank" rel="noopener">SPOJ - QTREE3 </a></h3>
+<p>也是单点修改，每次修改会反向颜色，但是难点是找到离1最近的黑点，维护的时候判断有点麻烦。</p>
+<p>第一次写的时候尝试用树状数组，然后发现辣鸡树状数组还是不好使啊，个人还是更会用线段树。</p>
+<p>代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> LL;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> maxn=<span class="hljs-number">100005</span>;
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; tree[maxn];
+<span class="hljs-comment">//树状数组克我</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span>{</span>
+    <span class="hljs-keyword">int</span> deep,son,siz;
+    <span class="hljs-keyword">int</span> posi,fa,top;
+}Node[maxn];
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">lnode</span>{</span>
+    <span class="hljs-keyword">int</span> l,r,min;
+}ltree[maxn&lt;&lt;<span class="hljs-number">2</span>];
+<span class="hljs-keyword">int</span> n,q;
+<span class="hljs-keyword">int</span> tot,refer[maxn];
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i){
+        tree[i].clear();
+    }
+    <span class="hljs-built_in">memset</span>(Node,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(Node));
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">check_min</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">int</span> b)</span></span>{
+    <span class="hljs-keyword">if</span>(a==<span class="hljs-number">-1</span>){
+        <span class="hljs-keyword">return</span> b;
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(b==<span class="hljs-number">-1</span>){
+        <span class="hljs-keyword">return</span> a;
+    }
+    <span class="hljs-keyword">if</span>(Node[a].deep&lt;Node[b].deep)
+        <span class="hljs-keyword">return</span> a;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> b;
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">pre_build</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    ltree[k].l=l,ltree[k].r=r,ltree[k].min=<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">if</span>(l==r){
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">int</span> mid=(l+r)&gt;&gt;<span class="hljs-number">1</span>;
+    pre_build(k&lt;&lt;<span class="hljs-number">1</span>,l,mid);
+    pre_build(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r);
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">change_color</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k,<span class="hljs-keyword">int</span> num)</span></span>{
+    <span class="hljs-keyword">if</span>(ltree[k].l==ltree[k].r) {
+        <span class="hljs-keyword">if</span>(ltree[k].min!=<span class="hljs-number">-1</span>)
+            ltree[k].min=<span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">else</span> ltree[k].min=refer[ltree[k].l];
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">int</span> mid=(ltree[k].l+ltree[k].r)&gt;&gt;<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(mid&gt;=num) change_color(k&lt;&lt;<span class="hljs-number">1</span>,num);
+    <span class="hljs-keyword">else</span> change_color(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,num);
+    ltree[k].min=check_min(ltree[k&lt;&lt;<span class="hljs-number">1</span>].min,ltree[k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>].min);
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    <span class="hljs-keyword">if</span>(ltree[k].min==<span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">if</span>(ltree[k].l==l&amp;&amp;ltree[k].r==r) <span class="hljs-keyword">return</span> ltree[k].min;
+    <span class="hljs-keyword">int</span> mid=(ltree[k].l+ltree[k].r)&gt;&gt;<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(r&lt;=mid) <span class="hljs-keyword">return</span> query(k&lt;&lt;<span class="hljs-number">1</span>,l,r);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(l&gt;mid) <span class="hljs-keyword">return</span> query(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,l,r);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> check_min(query(k&lt;&lt;<span class="hljs-number">1</span>,l,mid),query(k&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r));
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> fa)</span></span>{
+    Node[u].deep=Node[fa].deep+<span class="hljs-number">1</span>;
+    Node[u].fa=fa;
+    Node[u].siz=<span class="hljs-number">1</span>;
+    Node[u].son=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tree[u].size();++i){
+        <span class="hljs-keyword">int</span> v=tree[u][i];
+        <span class="hljs-keyword">if</span>(v!=fa){
+            dfs1(v,u);
+            Node[u].siz+=Node[v].siz;
+            <span class="hljs-keyword">if</span>(Node[Node[u].son].siz&lt;Node[v].siz){
+                Node[u].son=v;
+            }
+        }
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs2</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> ancient)</span></span>{
+    refer[++tot]=u;
+    Node[u].posi=tot;
+    Node[u].top=ancient;
+    <span class="hljs-keyword">if</span>(Node[u].son)
+        dfs2(Node[u].son,ancient);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tree[u].size();++i){
+        <span class="hljs-keyword">int</span> v=tree[u][i];
+        <span class="hljs-keyword">if</span>(v!=Node[u].fa&amp;&amp;v!=Node[u].son){
+            dfs2(v,v);
+        }
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">split</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    <span class="hljs-keyword">int</span> topl=Node[l].top,topr=Node[r].top;
+    <span class="hljs-keyword">int</span> res=<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">while</span>(topl!=topr){
+        <span class="hljs-keyword">if</span>(Node[topl].deep&gt;Node[topr].deep){
+            swap(l,r);
+            swap(topl,topr);
+        }
+        <span class="hljs-keyword">int</span> tmp=query(<span class="hljs-number">1</span>,Node[topr].posi,Node[r].posi);
+        res=check_min(res,tmp);
+        r=Node[topr].fa;
+        topr=Node[r].top;
+    }
+    <span class="hljs-keyword">int</span> tmp=query(<span class="hljs-number">1</span>,Node[l].posi,Node[r].posi);
+    <span class="hljs-keyword">return</span> check_min(res,tmp);
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-keyword">while</span>(~<span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;n,&amp;q)){
+        init();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;n;++i){
+            <span class="hljs-keyword">int</span> a,b;
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;a,&amp;b);
+            tree[a].push_back(b);
+            tree[b].push_back(a);
+        }
+        dfs1(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+        dfs2(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+        pre_build(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,n);
+        <span class="hljs-keyword">int</span> a,b;
+        <span class="hljs-keyword">while</span>(q--){
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;a,&amp;b);
+            <span class="hljs-keyword">if</span>(a==<span class="hljs-number">0</span>){
+                change_color(<span class="hljs-number">1</span>,Node[b].posi);
+            }
+            <span class="hljs-keyword">else</span>{
+                <span class="hljs-keyword">int</span> res=split(<span class="hljs-number">1</span>,b);
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d\n"</span>,res);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
 <p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-树链剖分/%20SUP project%20sup-extra 树链剖分" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-005/" title="sup-005 动态博客搭建">Next post: sup-005 动态博客搭建&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
