@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-extra 代码模板 · SUP project</title><meta name="description" content="板子——2019.7
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-extra 代码模板 · SUP project</title><meta name="description" content="板子——2019 summer
+[TOC]
  树论&amp;amp;图论
  网络流
 使用范围：主要解决的问题就是最大流（从源点到汇点的总量最大）和最小割（断掉最小权值的边使得源点不能到达汇点），似乎还能解决二分图的问题
-思想：利用BFS判断每个点的深度，然后利用DFS算出每条链上的最小权值，每次修改的时候更新路上的所有边。使用的"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">首頁</a></li><li><a href="/archives">歸檔</a></li><li><a href="/tags">標籤</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-extra 代码模板</a></p><p class="post-meta"><span class="date meta-item">發佈於&nbsp;2019-07-26</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/ICPC/" title="ICPC" class="a-tag">ICPC</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="板子20197"><a class="markdownIt-Anchor" href="#板子20197"></a> 板子——2019.7</h1>
+思想：利用BFS判断每个点的深度，然后利用DFS算出每条链上的最小权值，每次修改的时候更"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-extra 代码模板</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2019-07-26</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/ICPC/" title="ICPC" class="a-tag">ICPC</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="板子2019-summer"><a class="markdownIt-Anchor" href="#板子2019-summer"></a> 板子——2019 summer</h1>
+<p>[TOC]</p>
 <h2 id="树论图论"><a class="markdownIt-Anchor" href="#树论图论"></a> 树论&amp;图论</h2>
 <h3 id="网络流"><a class="markdownIt-Anchor" href="#网络流"></a> 网络流</h3>
 <p>使用范围：主要解决的问题就是最大流（从源点到汇点的总量最大）和最小割（断掉最小权值的边使得源点不能到达汇点），似乎还能解决二分图的问题</p>
@@ -106,7 +108,6 @@ LL dis[maxn];
         <span class="hljs-keyword">int</span> u=q.top().num;
         LL tmp=q.top().dis;
         q.pop();
-        <span class="hljs-comment">//cout&lt;&lt;u&lt;&lt;' '&lt;&lt;tmp&lt;&lt;endl;</span>
         <span class="hljs-keyword">if</span>(dis[u]!=tmp) <span class="hljs-keyword">continue</span>;
         <span class="hljs-keyword">int</span> sz=ori[u].size();
         <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;sz;i++){
@@ -120,7 +121,30 @@ LL dis[maxn];
     }
 }
 </code></pre>
-<h3 id="dfs序"><a class="markdownIt-Anchor" href="#dfs序"></a> DFS序</h3>
+<h3 id="spfa"><a class="markdownIt-Anchor" href="#spfa"></a> SPFA</h3>
+<p>适用范围：带负权圈的图，用dijkstra会死循环。spfa原理是记录每个点的入队次数来规避负权圈。</p>
+<p>思想：反正就是那么回事自己理解一下</p>
+<p>模板代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">SPFA</span><span class="hljs-params">(<span class="hljs-keyword">int</span> s)</span></span>{
+    <span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt;q;
+    q.push(s);vis[s]=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span>(!q.empty()){
+        <span class="hljs-keyword">int</span> u=q.front();q.pop();
+        vis[u]=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;G[u].size();++i){
+            <span class="hljs-keyword">int</span> v=G[u][i].to,val=G[u][i].val;
+            <span class="hljs-keyword">if</span>(dis[u]&lt;INF&amp;&amp;dis[v]&gt;dis[u]+val){
+                dis[v]=dis[u]+val;
+                <span class="hljs-keyword">if</span>(!vis[v]){
+                    q.push(v);vis[v]=<span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span>(++cnt[v]&gt;n) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre>
 <h3 id="树链剖分"><a class="markdownIt-Anchor" href="#树链剖分"></a> 树链剖分</h3>
 <p>使用范围：对树结构进行区间序列操作的时候用。目前看起来是要对点权树使用，不过边权可以转换一下变成点权嘛……应该可以吧？</p>
 <p>思想：每次找到子树多的儿子作为重儿子，然后把重儿子组成的链称为重链，对其他的轻儿子肯定也能组成以自己为根的重链的。然后利用优先遍历重链的方式决定树变成区间时的DFS序，让重链在区间上连续。对树的路径查找利用LCA实现(但实际上跟LCA是有区别的，由于进行了树链剖分，每次只要先处理更轻的链，然后往上走走，进一条链就好处理了)，之后结合线段树实现对区间求和、区间最值什么的。</p>
@@ -140,7 +164,7 @@ LL dis[maxn];
     node[u].deep=node[fa].deep+<span class="hljs-number">1</span>;
     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;tree[u].size();++i){
         <span class="hljs-keyword">int</span> v=tree[u][i];
-        <span class="hljs-keyword">if</span>(v!=f) dfs1(v);
+        <span class="hljs-keyword">if</span>(v!=f) {dfs1(v);
         node[u].siz+=node[v].siz;
         <span class="hljs-keyword">if</span>(node[node[u].son].siz&lt;node[v].siz){
             node[u].son=v;
@@ -226,6 +250,254 @@ LL dis[maxn],dep[maxn];
         }
     }
     <span class="hljs-keyword">return</span> par[a][<span class="hljs-number">0</span>];
+}
+</code></pre>
+<h3 id="强连通分量缩点"><a class="markdownIt-Anchor" href="#强连通分量缩点"></a> 强连通分量缩点</h3>
+<p>使用范围：基本上是基础中的基础。缩点之后要为了目的服务才是关键。最常见的缩点就是为了应对某些情况下的单向性。比如<a href="http://poj.org/problem?id=2186" target="_blank" rel="noopener">poj-2186</a>奶牛崇拜和<a href="http://acm.hdu.edu.cn/showproblem.php?pid=5934" target="_blank" rel="noopener">hdu-5934</a>炸弹连环引爆都具有单向的传递性。就需要缩点来减少问题规模。</p>
+<p>思想：tarjan算法，使用DFS进行搜索。如果子树没有连到父节点以上的点，证明没有往回走的通路，则应该从这里断开，该点及其子树就是一个单独的强连通分量了。并且由于DFS是优先处理子树的，所以当你用栈来维护的时候如果栈顶不是目前节点，则说明他们都是构成强连通分量的你的翅膀。</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; path[maxn];
+<span class="hljs-keyword">int</span> dfn[maxn],low[maxn],tot;<span class="hljs-comment">//用于tarjan中维护。判断强连通的变量</span>
+<span class="hljs-keyword">bool</span> in[maxn];<span class="hljs-comment">//同上</span>
+<span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt; ss;<span class="hljs-comment">//强连通分量栈不能少啊，当然你要是闲可以自己写</span>
+<span class="hljs-keyword">int</span> block[maxn],ff;<span class="hljs-comment">//退栈时将元素分到相应的块中，标记每个元素属于哪一块</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">tarjan</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span></span>{
+    low[u]=dfn[u]=++tot;
+    ss.push(u);
+    in[u]=<span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">int</span> v;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;path[u].size();++i){
+        v=path[u][i];
+        <span class="hljs-keyword">if</span>(!dfn[v]){
+            tarjan(v);
+            <span class="hljs-keyword">if</span>(low[v]&lt;low[u]) low[u]=low[v];
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(in[v]&amp;&amp;dfn[v]&lt;low[u])
+            low[u]=dfn[v];
+
+    }
+    <span class="hljs-keyword">if</span>(low[u]==dfn[u]){
+        ++ff;
+        <span class="hljs-keyword">do</span>{
+            v=ss.top();
+            ss.pop();
+            block[v]=ff;
+            in[v]=<span class="hljs-literal">false</span>;
+        }<span class="hljs-keyword">while</span>(u!=v);
+    }
+}
+</code></pre>
+<h3 id="强连通分量求割点"><a class="markdownIt-Anchor" href="#强连通分量求割点"></a> 强连通分量求割点</h3>
+<p>使用范围：无向图中去掉点破坏其他点连通性的点称为割点</p>
+<p>思想：若一个点在进行tarjan的DFS时其子节点们的low[v]&lt;=dfn[u],意味着这个点不能在不经过u的情况下去到更高的点。（注意是无向图所以路不考虑方向）只要存在这样的子节点即说明该点是割点。根节点由于没有比它标号小的点所以需要特判，至少要有两个儿子节点满足上述关系。</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">tarjan</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> fa)</span></span>{
+    dfn[u]=++tot;low[u]=tot;<span class="hljs-comment">//这个就是DFS序</span>
+    <span class="hljs-keyword">int</span> son=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;path[u].size();++i){
+        <span class="hljs-keyword">int</span> v=path[u][i];
+        <span class="hljs-keyword">if</span>(v==fa) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span>(!dfn[v]){
+            tarjan(v,u);
+            low[u]=min(low[u],low[v]);<span class="hljs-comment">//注意跟下面那个不同</span>
+            <span class="hljs-keyword">if</span>(low[v]&gt;=dfn[u]){
+                son++;
+                <span class="hljs-keyword">if</span>(u!=root || son&gt;<span class="hljs-number">1</span>){
+                    cutpoint[u]= <span class="hljs-literal">true</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">else</span>
+          low[u]=min(dfn[v],low[u]);<span class="hljs-comment">//就是说要能够直接到达的点小而不能是间接到达的点小</span>
+    }
+}
+</code></pre>
+<p>针对两个low的不同考虑如下情况：</p>
+<pre class="highlight"><code class="mermaid">graph LR
+
+a(1)---b(3)
+c(2)---b
+a---c
+b---d(4)
+b---e(5)
+d---e
+</code></pre>
+<p>这个情况关系到上面的low判断的不同，目前先放在这里，晚上整理一下。结果晚上也没整理，自己感受一下吧。</p>
+<h3 id="欧拉回路-欧拉路径"><a class="markdownIt-Anchor" href="#欧拉回路-欧拉路径"></a> 欧拉回路 欧拉路径</h3>
+<p>适用范围：总之就是一笔画问题，如何不重复地走过所有的边。欧拉路是有两个度为奇数的点，从一点出发走到另一点，欧拉回路是度全为偶数，随便选个点走回来就完事了。</p>
+<p>思想：重点是存边，然后需要移动点指向的边来使得不重复访问已经访问过的点。如果是来回都只算一遍还要用编号去掉相应的反向边。另外如果题目没保证存在，则需要判断欧拉回路是否存在。</p>
+<p>模板代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">eular</span><span class="hljs-params">()</span></span>{
+    ss.push(<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">while</span>(!ss.empty()){
+        <span class="hljs-keyword">int</span> u=ss.top(),i=head[u];
+        <span class="hljs-keyword">while</span>(i&amp;&amp;vis[i]) i=Edge[i].nxt;
+        <span class="hljs-keyword">if</span>(i){
+            ss.push(Edge[i].to);
+            vis[i]=<span class="hljs-literal">true</span>;<span class="hljs-comment">//每条边只走一遍就是vis[i]=vis[i^1]=true;</span>
+            head[u]=Edge[i].nxt;
+        }
+        <span class="hljs-keyword">else</span>{
+            ss.pop();
+            res[++tot]=u;
+        }
+    }
+}
+</code></pre>
+<p>以下模板没用过，这里先放在这里看一下</p>
+<h3 id="求桥"><a class="markdownIt-Anchor" href="#求桥"></a> 求桥</h3>
+<p>这里更新为了lyd《算法竞赛进阶指南》上求桥的板子</p>
+<p>如果搜索树上某个点u的子节点v,dfn[u]&lt;low[v]。那么u-v这条边是割边。</p>
+<p>理性分析一下，这样说明v无法通过一条路径到达u本身和之前访问到的点，那么u,v这条边一旦断开，那么v和u就将不连通</p>
+<p>注意重边的情况，我们再前向星数组中存双向边是(2,3)(4,5)一对一对的，那么在更新low的时候，要判断上一条到达u点的边是否跟当前枚举的边在本质上是一条边，如果是，那么就不能用来更新low。</p>
+<pre class="highlight"><code class="c++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">tarjan</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> in_edge)</span>
+</span>{
+  <span class="hljs-keyword">int</span> v;
+  <span class="hljs-keyword">bool</span> flag=<span class="hljs-number">0</span>;
+  dfn[u]=low[u]=++ind;
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=ehead3[u];i;i=e3[i].nxt)
+    {
+      v=e3[i].to;
+      <span class="hljs-keyword">if</span>(!dfn[v])
+		{
+		  tarjan(v,i);
+		  low[u]=min(low[u],low[v]);
+		  <span class="hljs-keyword">if</span>(low[v]&gt;dfn[u])
+		    cut[e3[i].id]=cut[e3[i^<span class="hljs-number">1</span>].id]=<span class="hljs-literal">true</span>;
+		}
+	    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(i!=(in_edge^<span class="hljs-number">1</span>))
+		  low[u]=min(low[u],dfn[v]);
+	}
+}
+</code></pre>
+<h3 id="双联通分量缩点"><a class="markdownIt-Anchor" href="#双联通分量缩点"></a> 双联通分量缩点</h3>
+<h4 id="边双联通分量"><a class="markdownIt-Anchor" href="#边双联通分量"></a> 边双联通分量</h4>
+<p>求出桥以后去掉桥，剩下的连通块就是边双联通分量</p>
+<pre class="highlight"><code class="c++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">tarjan</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> last)</span>
+</span>{
+	dfn[u]=low[u]=++ind;
+	<span class="hljs-keyword">int</span> v;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=ehead[u];i;i=e[i].nxt)
+	{
+		v=e[i].to;
+		<span class="hljs-keyword">if</span>(!dfn[v])
+		{
+			tarjan(v,i);
+			low[u]=min(low[u],low[v]);
+			<span class="hljs-keyword">if</span>(low[v]&gt;dfn[u])
+				cut[e[i].id]=cut[e[i^<span class="hljs-number">1</span>].id]=<span class="hljs-literal">true</span>;
+		}
+		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(i!=(last^<span class="hljs-number">1</span>))
+			low[u]=min(low[u],dfn[v]);
+	}
+}
+ 
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span>
+</span>{
+	<span class="hljs-keyword">int</span> v;
+	c[u]=dcc;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=ehead[u];i;i=e[i].nxt)
+	{
+		v=e[i].to;
+		<span class="hljs-keyword">if</span>(c[v] || cut[e[i].id]) <span class="hljs-keyword">continue</span>;
+		dfs(v);
+	}
+}
+ 
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addc</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> v)</span>
+</span>{
+	ce[++ccnt].to=v;ce[ccnt].nxt=cehead[u];
+	cehead[u]=ccnt;
+}
+ 
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">cdfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u,<span class="hljs-keyword">int</span> last)</span>
+</span>{
+	<span class="hljs-keyword">int</span> v;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=cehead[u];i;i=ce[i].nxt)
+	{
+		v=ce[i].to;
+		<span class="hljs-keyword">if</span>(v==last) <span class="hljs-keyword">continue</span>;
+		dep[v]=dep[u]+<span class="hljs-number">1</span>;fa[v]=u;
+		cdfs(v,u);
+	}
+}
+ 
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">prework</span><span class="hljs-params">()</span>
+</span>{
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+		ehead[i]=<span class="hljs-number">0</span>,f[i]=<span class="hljs-number">0</span>;
+	<span class="hljs-keyword">int</span> u,v;cnt=<span class="hljs-number">1</span>;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)
+	{
+		<span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;u,&amp;v);
+		add(u,v,i);add(v,u,i);
+		cut[i]=<span class="hljs-literal">false</span>;
+	}
+	ind=<span class="hljs-number">0</span>;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+		dfn[i]=<span class="hljs-number">0</span>,low[i]=<span class="hljs-number">0</span>,c[i]=<span class="hljs-number">0</span>;
+	tarjan(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+	dcc=<span class="hljs-number">0</span>;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+	<span class="hljs-keyword">if</span>(!c[i])
+	{
+		++dcc;f[dcc]=dcc;
+		dfs(i);
+		cehead[dcc]=<span class="hljs-number">0</span>;dep[dcc]=<span class="hljs-number">0</span>;fa[dcc]=<span class="hljs-number">0</span>;
+	}
+	ccnt=<span class="hljs-number">1</span>;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">2</span>;i&lt;=cnt;i+=<span class="hljs-number">2</span>)
+	{
+		u=e[i].to;v=e[i^<span class="hljs-number">1</span>].to;
+		<span class="hljs-keyword">if</span>(c[u]==c[v])	<span class="hljs-keyword">continue</span>;
+		addc(c[u],c[v]);addc(c[v],c[u]);
+	}
+	fa[<span class="hljs-number">1</span>]=<span class="hljs-number">1</span>;
+	cdfs(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+}
+</code></pre>
+<h4 id="点双联通分量"><a class="markdownIt-Anchor" href="#点双联通分量"></a> 点双联通分量</h4>
+<pre class="highlight"><code class="c++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">tarjan</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span>
+</span>{
+	dfn[u]=low[u]=++ind;s[++top]=u;
+	<span class="hljs-keyword">if</span>(u==rt &amp;&amp; ehead[u]==<span class="hljs-number">0</span>)
+	{
+		dcc[++dcccnt].push_back(u);
+		<span class="hljs-keyword">return</span>;
+	}
+	<span class="hljs-keyword">int</span> son=<span class="hljs-number">0</span>,v;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=ehead[u];i;i=e[i].nxt)
+	{
+		v=e[i].to;
+		<span class="hljs-keyword">if</span>(!dfn[v])
+		{
+			tarjan(v);
+			low[u]=min(low[u],low[v]);
+			<span class="hljs-keyword">if</span>(low[v]&gt;=dfn[u])
+			{
+				son++;
+				<span class="hljs-keyword">if</span>(u!=rt || son&gt;<span class="hljs-number">1</span>)
+					cut[u]=<span class="hljs-literal">true</span>;
+				dcccnt++;
+				<span class="hljs-keyword">int</span> d;
+				<span class="hljs-keyword">do</span>
+				{
+					d=s[top--];
+					dcc[dcccnt].push_back(d);
+				}<span class="hljs-keyword">while</span>(d!=v);
+				dcc[dcccnt].push_back(u);
+			}
+		}
+		<span class="hljs-keyword">else</span>
+			low[u]=min(low[u],dfn[v]);
+	}
+}
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mainwork</span><span class="hljs-params">()</span>
+</span>{
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+	<span class="hljs-keyword">if</span>(!dfn[i])
+	{
+		rt=i;top=<span class="hljs-number">0</span>;
+		tarjan(i);
+	}
 }
 </code></pre>
 <h2 id="区间数"><a class="markdownIt-Anchor" href="#区间数"></a> 区间数</h2>
@@ -423,7 +695,203 @@ LL ori[maxn], sum[maxn];;
 <h3 id="线性基"><a class="markdownIt-Anchor" href="#线性基"></a> 线性基</h3>
 <p>适用范围：区间异或相关的各种问题。</p>
 <p>思想：实际上利用的是异或的性质，在数字最大为64位的情况下，64个最高位不同的二进制数从中随意选数来异或，能表示2<sup>64</sup>个数，如果一个数在与现有数字异或的过程中变成0了，说明这个数可以由现有的数进行异或得到（毕竟异或运算的逆运算就是异或）。然而如果这个数字没有被消掉，那肯定会有某个高位是0，让你可以把数插进去。同时由于异或同一个数两次等于没异或，让你可以在遍历线性基一遍的时间内得到你想要的异或结果。</p>
-<p>模板代码：</p>
-<pre class="highlight"><code class="cpp">
+<p>模板代码：(异或第k小)</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">build</span><span class="hljs-params">(LL x)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">62</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(x&amp;(<span class="hljs-number">1l</span>l&lt;&lt;i)){
+            <span class="hljs-keyword">if</span>(lis[i]) x^=lis[i];
+            <span class="hljs-keyword">else</span> {
+                lis[i]=x;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+        }
+    }
+    havezero=<span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">rebuild</span><span class="hljs-params">()</span></span>{
+    coun=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">62</span>;i&gt;=<span class="hljs-number">1</span>;--i){<span class="hljs-comment">//i=0的时候必定为1，不用往下异或了</span>
+        <span class="hljs-keyword">if</span>(lis[i]){
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=i<span class="hljs-number">-1</span>;j&gt;=<span class="hljs-number">0</span>;--j){
+                <span class="hljs-keyword">if</span>(lis[i]&amp;(<span class="hljs-number">1l</span>l&lt;&lt;j)){<span class="hljs-comment">//保证有减小</span>
+                    lis[i]^=lis[j];
+                }
+            }
+        }
+    }<span class="hljs-comment">//由于线性基性质+每次只改变后面j位,所以扫一遍就够了</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">62</span>;++i){
+        <span class="hljs-keyword">if</span>(lis[i])
+            sml[coun++]=lis[i];
+    }
+}
+<span class="hljs-function">LL <span class="hljs-title">ksmall</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k)</span></span>{
+    <span class="hljs-keyword">if</span>(havezero) --k;
+    LL res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(k&gt;=(<span class="hljs-number">1l</span>l&lt;&lt;coun)) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=coun;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(k&amp;(<span class="hljs-number">1l</span>l&lt;&lt;i))
+            res^=sml[i];
+    }
+    <span class="hljs-keyword">return</span> res;
+}
 </code></pre>
-<p></p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-ICPCtemplate/%20SUP project%20sup-extra 代码模板" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/sup-extra-线性基/" title="sup-extra 线性基"><i class="fa fa-angle-double-left"></i>&nbsp;上一篇: sup-extra 线性基</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-主席树/" title="sup-extra 主席树的原理及使用">下一篇: sup-extra 主席树的原理及使用&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
+<p>如果是区间异或的板子：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num,<span class="hljs-keyword">int</span> k)</span></span>{
+    <span class="hljs-keyword">int</span> nown=num,nowv=k;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">30</span>;++i){
+        xmxyji[num][i]=xmxyji[num<span class="hljs-number">-1</span>][i];
+        posi[num][i]=posi[num<span class="hljs-number">-1</span>][i];
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">30</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>((<span class="hljs-number">1</span>&lt;&lt;i)&amp;k){
+            <span class="hljs-keyword">if</span>(!xmxyji[num][i]){
+                xmxyji[num][i]=k;
+                posi[num][i]=nown;
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">else</span>{
+                <span class="hljs-keyword">if</span>(nown&gt;posi[num][i]){
+                    swap(k,xmxyji[num][i]);
+                    swap(nown,posi[num][i]);
+                }
+                k^=xmxyji[num][i];
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> ;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>{
+    <span class="hljs-keyword">int</span> res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(l&gt;r) swap(l,r);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">30</span>;i&gt;=<span class="hljs-number">0</span>;--i){
+        <span class="hljs-keyword">if</span>(posi[r][i]&gt;=l){
+            <span class="hljs-keyword">if</span>(res&lt;(res^xmxyji[r][i]))
+                res^=xmxyji[r][i];
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+<p>我tm竟然到线性基就没更新了吗……也太怠惰了吧</p>
+<h3 id="单调队列"><a class="markdownIt-Anchor" href="#单调队列"></a> 单调队列</h3>
+<p>适用范围：在数组里面移动的过程中的区间最值问题。</p>
+<p>思想：需要维护的一方面是维护队首是最值，队尾是新插入的值。当队首已经过期的时候删去队首。每次插入新的元素就与队尾元素进行比较，比如维护的是最小值，如果新元素比队尾元素小，就删掉队尾，再跟新的队尾判断，直到队空或者新元素比队尾大，就将新元素加入队尾。最大值就是反过来的。可以用stl里面的deque来实现，不过挺容易的，实际上手写也很方便。维护单调队列复杂度整体是o(n),单次询问是o(1)，可以拿来做dp优化。</p>
+<p>模板代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">max_insert</span><span class="hljs-params">()</span></span>{<span class="hljs-comment">//最开始写了一个纯数组存编号，但是找值太反人类，还是一并存值好理解</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;++i){
+        <span class="hljs-keyword">if</span>(maxl!=maxr&amp;&amp;maxque[maxl].num&lt;=i-k){
+            maxl=(maxl+<span class="hljs-number">1</span>)%maxn;<span class="hljs-comment">//队首退栈警告</span>
+        }
+        <span class="hljs-comment">//栈中的比要插入的值小的就没必要留在里面了</span>
+        <span class="hljs-keyword">while</span>(maxque[maxr<span class="hljs-number">-1</span>].val&lt;ori[i]&amp;&amp;maxl&lt;maxr)
+            maxr=(maxr<span class="hljs-number">-1</span>+maxn)%maxn;
+        maxque[maxr]=mq(ori[i],i);<span class="hljs-comment">//单调队列是不存在插不进去的情况的</span>
+        maxr=(maxr+<span class="hljs-number">1</span>)%maxn;
+        resmax[i]=maxque[maxl].val;
+    }
+}
+</code></pre>
+<h2 id="数学问题"><a class="markdownIt-Anchor" href="#数学问题"></a> 数学问题</h2>
+<h3 id="扩展欧几里得"><a class="markdownIt-Anchor" href="#扩展欧几里得"></a> 扩展欧几里得</h3>
+<p>适用范围：原本还拿来求求逆元什么的……结果发现快速幂用费马小定理速度差不多的情况下还更好写……但是还是记一下吧……万一用到了呢。</p>
+<p>思想：欧几里得就完事了，然后从终态往前面算可能的值。总之就是ax+by=res这样子。关于y的计算可以稍微推一下式子。</p>
+<p>模板代码：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">ex_gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">int</span> b,<span class="hljs-keyword">int</span> &amp;x,<span class="hljs-keyword">int</span> &amp;y)</span></span>{
+    <span class="hljs-keyword">if</span>(b==<span class="hljs-number">0</span>){
+        x=<span class="hljs-number">1</span>,y=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> b;
+    }
+    <span class="hljs-keyword">int</span> res=ex_gcd(b,a%b,x,y);
+    <span class="hljs-keyword">int</span> tmp=y;
+    y=x-y*(a/b);
+    x=tmp;
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+<h3 id="拉格朗日插值法"><a class="markdownIt-Anchor" href="#拉格朗日插值法"></a> 拉格朗日插值法</h3>
+<p>适用范围：n次多项式求值，包括自然数的幂和。</p>
+<p>思路：拉格朗日插值法告诉我们，一个n次的多项式可以由n+1个点值来进行确定，而自然数的幂和，即1<sup>k</sup>+2<sup>k</sup>+…+n<sup>k</sup> 必定存在一个最高项为k+1次的通项公式，故我们只要选择k+2个点就可以求出任意的k值。注意当n&lt;k时直接返回值，否则按照模的逆运算你可能得不到结果。给出拉格朗日插值的一般形式：</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mstyle scriptlevel="0" displaystyle="true"><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mfrac><mrow><msub><mi>y</mi><mi>k</mi></msub><mo>∗</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>)</mo><mo>∗</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo><mo>∗</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>∗</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>)</mo><mo>∗</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>)</mo><mo>∗</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>∗</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow><mrow><mo>(</mo><msub><mi>x</mi><mi>k</mi></msub><mo>−</mo><msub><mi>x</mi><mn>1</mn></msub><mo>)</mo><mo>∗</mo><mo>(</mo><msub><mi>x</mi><mi>k</mi></msub><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><mo>)</mo><mo>∗</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>∗</mo><mo>(</mo><msub><mi>x</mi><mi>k</mi></msub><mo>−</mo><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>)</mo><mo>∗</mo><mo>(</mo><msub><mi>x</mi><mi>k</mi></msub><mo>−</mo><msub><mi>x</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>)</mo><mo>∗</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>∗</mo><mo>(</mo><msub><mi>x</mi><mi>k</mi></msub><mo>−</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">f(x)=\displaystyle\sum_{i=1}^n\frac{y_k*(x-x_1)*(x-x_2)*...*(x-x_{k-1})*(x-x_{k+1})*...*(x-x_n)}{(x_k-x_1)*(x_k-x_2)*...*(x_k-x_{k-1})*(x_k-x_{k+1})*...*(x_k-x_n)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
+<p>这里面前只给出幂和的代码：</p>
+<pre class="highlight"><code class="cpp">LL jxig[maxn],ffzi,y[maxn];<span class="hljs-comment">//y值怎么求也不用放了吧，反正递推求就完事了</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>{<span class="hljs-comment">//由于选取的是连续的点，所以每一项的分母必定是阶乘的形式</span>
+    jxig[<span class="hljs-number">0</span>]=jxig[<span class="hljs-number">1</span>]=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">2</span>;i&lt;=<span class="hljs-number">1000002</span>;++i)
+        jxig[i]=(jxig[i<span class="hljs-number">-1</span>]*i)%mod;
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">qqffzi</span><span class="hljs-params">()</span></span>{<span class="hljs-comment">//预处理出分子，针对每一项再做除法即可。</span>
+    ffzi=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=k+<span class="hljs-number">2</span>;++i) ffzi=ffzi*(n-i)%mod;
+}
+<span class="hljs-function">LL <span class="hljs-title">qpow</span><span class="hljs-params">(LL x,<span class="hljs-keyword">int</span> m)</span></span>{<span class="hljs-comment">//快速幂的代码没有放出来的必要吧</span>
+}
+<span class="hljs-function">LL <span class="hljs-title">lagelhri</span><span class="hljs-params">()</span></span>{
+    LL res=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=k+<span class="hljs-number">2</span>;++i){
+        LL ig=y[i],iu=(jxig[i<span class="hljs-number">-1</span>]*jxig[k+<span class="hljs-number">2</span>-i])%mod;
+        <span class="hljs-keyword">if</span>((k+<span class="hljs-number">2</span>-i)&amp;<span class="hljs-number">1</span>) iu=mod-iu;<span class="hljs-comment">//判断除数的正负</span>
+        ig=(ig*ffzi)%mod*qpow(n-i,mod<span class="hljs-number">-2</span>)%mod;
+        res+=ig*qpow(iu,mod<span class="hljs-number">-2</span>)%mod;
+        res%=mod;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+<h3 id="fft"><a class="markdownIt-Anchor" href="#fft"></a> FFT</h3>
+<p>适用范围：大数乘法，或者是<a href="http://acm.hdu.edu.cn/showproblem.php?pid=4609" target="_blank" rel="noopener">HDU-4609</a>这样的有很多的加法运算，并且要算概率的一揽子问题。不然常规的三角形问题可以通过贪心解决，因为不能组成三角形的边是满足斐波那契数列递增规律的，1e9数量级内不会超过44次</p>
+<p>思路：别问，问就我也不会。大致思路似乎是将系数表示变成点值表示，同时点值表示选取的是单位元的上的点，从而根据复数平面的对称性使得你实际上只需要求上半部分的值就能得出下半部分，再进行分治后就将时间复杂度从O(n<sup>2</sup>)变成了 O(nlogn)了。中间还有一些优化什么的……但是太复杂了不会用。另外核心思想就在于F(x)=f(x) * g(x),则F(x<sub>0</sub>)=f(x<sub>0</sub>)*g(x<sub>0</sub>)。而复数的点积就是一个因式分解？非常好算。</p>
+<p>代码模板：</p>
+<pre class="highlight"><code class="cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">complex</span>
+{</span>
+    <span class="hljs-keyword">double</span> re,im;
+    <span class="hljs-keyword">complex</span> (<span class="hljs-keyword">double</span> r=<span class="hljs-number">0.0</span>,<span class="hljs-keyword">double</span> i=<span class="hljs-number">0.0</span>){re=r;im=i;}
+
+}a[maxl*<span class="hljs-number">2</span>],b[maxl*<span class="hljs-number">2</span>],w[<span class="hljs-number">2</span>][maxl*<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">complex</span> <span class="hljs-keyword">operator</span> +(<span class="hljs-keyword">const</span> <span class="hljs-keyword">complex</span>&amp;x,<span class="hljs-keyword">const</span> <span class="hljs-keyword">complex</span>&amp;y)
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">complex</span>(x.re+y.re,x.im+y.im);
+    }
+    <span class="hljs-keyword">complex</span> <span class="hljs-keyword">operator</span> -(<span class="hljs-keyword">const</span> <span class="hljs-keyword">complex</span>&amp;x,<span class="hljs-keyword">const</span> <span class="hljs-keyword">complex</span>&amp;y)
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">complex</span>(x.re-y.re,x.im-y.im);
+    }
+    <span class="hljs-keyword">complex</span> <span class="hljs-keyword">operator</span> *(<span class="hljs-keyword">const</span> <span class="hljs-keyword">complex</span>&amp;x,<span class="hljs-keyword">const</span> <span class="hljs-keyword">complex</span>&amp;y)
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">complex</span>(x.re*y.re-x.im*y.im,x.im*y.re+x.re*y.im);
+    }
+<span class="hljs-keyword">int</span> n,na,nb,rev[maxl*<span class="hljs-number">2</span>],res[maxl*<span class="hljs-number">2</span>];
+<span class="hljs-keyword">char</span> oria[maxl],orib[maxl];
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;++i){rev[i]=(rev[i&gt;&gt;<span class="hljs-number">1</span>]&gt;&gt;<span class="hljs-number">1</span>)|(i&amp;<span class="hljs-number">1</span>)&lt;&lt;(len<span class="hljs-number">-1</span>);}<span class="hljs-comment">//求出编号的翻转值，用来在分治时缩小常数</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)<span class="hljs-comment">//求单位元上的点</span>
+    {
+        w[<span class="hljs-number">0</span>][i]=w[<span class="hljs-number">1</span>][i]=<span class="hljs-keyword">complex</span>(<span class="hljs-built_in">cos</span>(<span class="hljs-number">2</span>*pi*i/n),<span class="hljs-built_in">sin</span>(<span class="hljs-number">2</span>*pi*i/n));
+        w[<span class="hljs-number">1</span>][i].im=-w[<span class="hljs-number">0</span>][i].im;
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FFT</span><span class="hljs-params">(<span class="hljs-keyword">complex</span> *a,<span class="hljs-keyword">int</span> order)</span>
+</span>{
+    <span class="hljs-keyword">complex</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)
+    {
+        <span class="hljs-keyword">if</span>(i&lt;rev[i])swap(a[i],a[rev[i]]);
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;n;i&lt;&lt;=<span class="hljs-number">1</span>)
+    {
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>,t=n/(i&lt;&lt;<span class="hljs-number">1</span>);j&lt;n;j+=i&lt;&lt;<span class="hljs-number">1</span>)
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k=<span class="hljs-number">0</span>,l=<span class="hljs-number">0</span>;k&lt;i;k++,l+=t)
+        {
+            x=w[order][l]*a[j+k+i];
+            y=a[j+k];
+            a[j+k]=y+x;
+            a[j+k+i]=y-x;
+        }
+    }
+    <span class="hljs-keyword">if</span>(order)<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++) a[i].re/=n;
+}
+<span class="hljs-comment">//主函数中需要处理出来最高位len和最高位的数字n</span>
+<span class="hljs-comment">//然后主函数中需要进行的操作就是fft(a,0);fft(b,0);循环a[i]=a[i]*b[i];fft(a,1);然后实部四舍五入加起来。</span>
+</code></pre>
+<p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-ICPCtemplate/%20SUP project%20sup-extra 代码模板" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/sup-extra-线性基/" title="sup-extra 线性基"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: sup-extra 线性基</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-主席树/" title="sup-extra 主席树的原理及使用">Next post: sup-extra 主席树的原理及使用&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>

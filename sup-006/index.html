@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-006 pwn常用知识索引 · SUP project</title><meta name="description" content="pwn常用知识索引
+##1. pwn是什么
+百度百科给出的回答是”Pwn”是一个黑客语法的俚语词 ，是指攻破设备或者系统 。发音类似“砰”，对黑客而言，这就是成功实施黑客攻击的声音——砰的一声，被“黑”的电脑或手机就被你操纵了 。
+ 2. 如何实现攻破？
+目前理解范围内的pwn应该就是缓冲区溢出吧，"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-006 pwn常用知识索引</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2019-09-05</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/collection/" title="collection" class="a-tag">collection</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="pwn常用知识索引"><a class="markdownIt-Anchor" href="#pwn常用知识索引"></a> pwn常用知识索引</h1>
+<p>##1. pwn是什么</p>
+<p>百度百科给出的回答是<code>”Pwn”是一个黑客语法的俚语词 ，是指攻破设备或者系统 。发音类似“砰”，对黑客而言，这就是成功实施黑客攻击的声音——砰的一声，被“黑”的电脑或手机就被你操纵了 。</code></p>
+<h2 id="2-如何实现攻破"><a class="markdownIt-Anchor" href="#2-如何实现攻破"></a> 2. 如何实现攻破？</h2>
+<p>目前理解范围内的pwn应该就是缓冲区溢出吧，后期理解了新方法时再对该问题进行补充</p>
+<h2 id="3-缓冲区溢出的过程与实现的目的"><a class="markdownIt-Anchor" href="#3-缓冲区溢出的过程与实现的目的"></a> 3. 缓冲区溢出的过程与实现的目的</h2>
+<p>缓冲区溢出是通过缓冲区漏洞导致程序不正常跳转，以达到控制程序的目的。进行缓冲区溢出的攻击方式即是往缓冲区上写超出变量申请的数据，覆盖相邻栈中的值，以实现控制。</p>
+<h2 id="35-关于栈帧的几个寄存器的变化规则"><a class="markdownIt-Anchor" href="#35-关于栈帧的几个寄存器的变化规则"></a> 3.5 关于栈帧的几个寄存器的变化规则</h2>
+<p>±&gt;下降 - -&gt;上升 Linux64位存储变量时使用的寄存器依次为 RDI, RSI, RDX, RCX, R8 和 R9，常见的四种调用约定：_stdcall （windowsAPI 默认调用方式）<br>
+_cdecl （c/c++默认调用方式）<br>
+_fastcall<br>
+_thiscall</p>
+<p>gadget：一串pop+ret，通过跳转到这里来改变寄存器的值。</p>
+<h2 id="4-缓冲区溢出的几个种类"><a class="markdownIt-Anchor" href="#4-缓冲区溢出的几个种类"></a> 4. 缓冲区溢出的几个种类</h2>
+<h3 id="41-ret2text"><a class="markdownIt-Anchor" href="#41-ret2text"></a> 4.1 ret2text</h3>
+<p>控制程序执行程序本身已有的代码。目前看来最常见的就是将程序导向执行<code>system(&quot;/bin/sh&quot;)</code>,执行指令之后代表你已经获取了系统的控制权，之后就可以在目录下直接ls查找flag了。</p>
+<h3 id="42-ret2shellcode"><a class="markdownIt-Anchor" href="#42-ret2shellcode"></a> 4.2 ret2shellcode</h3>
+<p>控制程序执行shellcode代码。shellcode代码即是获取目标系统的shell(命令行界面)。shellcode的构造并不需要自己亲自动手，基本上是通过pwntools实现的。</p>
+<h3 id="43-ret2libc"><a class="markdownIt-Anchor" href="#43-ret2libc"></a> 4.3 ret2libc</h3>
+<p>待定</p>
+<h3 id="44-ret2syscall"><a class="markdownIt-Anchor" href="#44-ret2syscall"></a> 4.4 ret2syscall</h3>
+<p>通过<code>int 0x80</code>中断来实现的调用，可以用ROPgadget来做查找。</p>
+<h2 id="5-rop攻击"><a class="markdownIt-Anchor" href="#5-rop攻击"></a> 5. ROP攻击</h2>
+<p>Return-Oriented-Programming,面向返回的编程，基于代码复用技术，从已有的库或可执行文件中提取指令片段构建恶意代码的攻击。</p>
+<h2 id="6pwntools"><a class="markdownIt-Anchor" href="#6pwntools"></a> 6.pwntools</h2>
+<p>ubuntu环境+python2.7. 整体分为pwn和pwnlib两部分。根据官方文档来看pwn包主要是用于CTF，而pwnlib则是包含这些函数的库，当你只想挑出部分函数使用时就需要使用这个东西了。</p>
+<h3 id="61-使用pwntools-流程"><a class="markdownIt-Anchor" href="#61-使用pwntools-流程"></a> 6.1 使用pwntools 流程</h3>
+<ol>
+<li>
+<p><code>from pwn import *</code></p>
+</li>
+<li>
+<p>设定context:</p>
+<p>pwntools需要用到全局变量context里面的信息，所以要在最开始设定契合需求的context，其中包括目标操作系统、体系结构（<strong>architectures</strong>）、多少位</p>
+<p><strong>architectures</strong>= {‘aarch64’: {‘bits’: 64, ‘endian’: ‘little’},</p>
+<ul>
+<li>
+<p>‘alpha’: {‘bits’: 64, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘amd64’: {‘bits’: 64, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘arm’: {‘bits’: 32, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘avr’: {‘bits’: 8, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘cris’: {‘bits’: 32, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘i386’: {‘bits’: 32, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘ia64’: {‘bits’: 64, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘m68k’: {‘bits’: 32, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘mips’: {‘bits’: 32, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘mips64’: {‘bits’: 64, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘msp430’: {‘bits’: 16, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘powerpc’: {‘bits’: 32, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘powerpc64’: {‘bits’: 64, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘s390’: {‘bits’: 32, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘sparc’: {‘bits’: 32, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘sparc64’: {‘bits’: 64, ‘endian’: ‘big’},</p>
+</li>
+<li>
+<p>‘thumb’: {‘bits’: 32, ‘endian’: ‘little’},</p>
+</li>
+<li>
+<p>‘vax’: {‘bits’: 32, ‘endian’: ‘little’}}</p>
+<p>定好architecture 时会设置大/小端序与位数</p>
+<p><em>os</em>= [‘android’, ‘cgc’, ‘freebsd’, ‘linux’, ‘windows’]</p>
+</li>
+</ul>
+<p>多数情况下只需要设置这两个参数即可。</p>
+</li>
+<li>
+<p>建立连接</p>
+<p>总之建立了连接（管道）就能进行IO了嘛。管道一共四种：</p>
+<ul>
+<li>
+<p>Process：process(<em>argv=None</em>, <em>shell=False</em>**,** <em>executable=None</em>**,** <em>cwd=None</em>**,** <em>env=None</em>**,** <em>stdin=-1</em>**,** <em>stdout=&lt;pwnlib.tubes.process.PTY object&gt;</em><strong>,</strong> <em>stderr=-2</em>**,** <em>close_fds=True</em>**,** <em>preexec_fn=&lt;function <lambda>&gt;</lambda></em><strong>,</strong> <em>raw=True</em>**,** <em>aslr=None</em>**,** <em>setuid=None</em>**,** <em>where='local’</em><strong>,</strong> <em>display=None</em>**,** <em>alarm=None</em>**,**  * args,  * kwargs)</p>
+<p>实际上看起来创建这个的时候能改的参数很多，不过实际上主要使用的变量值并不多。<strong>executable</strong>:要执行的二进制文件地址。stdin、stdout、stderr：设置输入输出与报错的管道。</p>
+</li>
+<li>
+<p>Serial Ports：没见过也没用过，就当它不存在吧。光看解释的话应该是连接的本地端口。</p>
+</li>
+<li>
+<p>SSH：ssh(user, host, port=22, password=None, key=None, keyfile=None, proxy_command=None, proxy_sock=None, level=None, cache=True, ssh_agent=False, *a, **kw)。创建ssh连接，由于要用密码/私钥/私钥文件进行连接所以实际上也不怎么用得到的吧</p>
+</li>
+<li>
+<p>Socket：remote(host, port, fam=‘any’, typ=‘tcp’, ssl=False, sock=None, * args, ** kwargs)与远程主机建立连接。listen(port=0, bindaddr=‘0.0.0.0’, fam=‘any’, typ=‘tcp’, * args,** kwargs) 客户端的接收。server(port=0, bindaddr=‘0.0.0.0’, fam=‘any’, typ=‘tcp’, callback=None, blocking=False, *args, ** kwargs)创建服务端监听连接。常用的就是remote了。fam:{“any”,“ipv4”,“ipv6”},typ:{“tcp”,“udp”}</p>
+</li>
+</ul>
+<p>有了管道实例之后就可以来进行IO交互了。</p>
+<p>接收：recv(numb = 4096, timeout = default) 普通的收到多少显示多少</p>
+<p>​		recvn(numb, timeout = default)读n个字符</p>
+<p>​		recvall() 读到EOF停止</p>
+<p>​		recvline(keepends = True)总之就是读一行了，keepends改成false则不要换行符。</p>
+<p>​		recvline_contains(items, keepends=False, timeout=pwnlib.timeout.Timeout.default)返回包含items的行，items可以是tuple</p>
+<p>​		recvline_pred(pred, keepends = False)pred函数返回true就输出该行</p>
+<p>​		recvline_regex(regex, exact=False, keepends=False, timeout=pwnlib.timeout.Timeout.default)</p>
+<p>​		recvline_endswith(delims, keepends = False, timeout = default)返回以delims结尾的行</p>
+<p>​		recvline_startswith(delims, keepends = False, timeout = default) 返回以delims开头的行</p>
+<p>​		recvlines(numlines, keepends = False, timeout = default) 多行</p>
+<p>​		基本上用得到的只有recvline吧</p>
+<p>发送：send(data) sendafter(delim, data, timeout = default) sendline(data) sendlineafter(delim, data, timeout = default) sendlinethen(delim, data, timeout = default) sendthen(delim, data, timeout = default) 总之看名字就会用了就不多说了。</p>
+<p>交互：获得shell后直接使用interactive()函数就能实现交互了。</p>
+<p>至于其他的函数诸如settimeout 、shutdown  、wait之类的要用再翻文档吧。</p>
+</li>
+</ol>
+<h3 id="7-checksec-filename详细内容"><a class="markdownIt-Anchor" href="#7-checksec-filename详细内容"></a> 7. checksec filename<a href="https://www.jianshu.com/p/8a9ef7205632" target="_blank" rel="noopener">详细内容</a></h3>
+<p>canary：栈保护，原理是用一个标记位放在栈中，用来防止缓冲区溢出攻击</p>
+<p>NX（DEP）：设置栈段不可执行，enable时开启保护，不能执行代码</p>
+<p>PIE（ASLR）：内存地址随机化。三种情况：</p>
+<p>0 - 表示关闭进程地址空间随机化。</p>
+<p>1 - 表示将mmap的基址，stack和vdso页面随机化。</p>
+<p>2 - 表示在1的基础上增加栈（heap）的随机化。</p>
+<p>RELRO：partial RELRO说明对got表有读写权限，FULL RELRO 则无法修改got表</p>
+<p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-006/%20SUP project%20sup-006 pwn常用知识索引" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-栈溢出入门/" title="sup-extra 栈溢出入门">Next post: sup-extra 栈溢出入门&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>

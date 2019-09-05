@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://tlooper.github.io/"/>
-  <updated>2019-08-05T08:57:59.145Z</updated>
+  <updated>2019-09-05T03:48:11.541Z</updated>
   <id>https://tlooper.github.io/</id>
   
   <author>
@@ -15,6 +15,81 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sup-006 pwn常用知识索引</title>
+    <link href="https://tlooper.github.io/sup-006/"/>
+    <id>https://tlooper.github.io/sup-006/</id>
+    <published>2019-09-05T03:45:00.000Z</published>
+    <updated>2019-09-05T03:48:11.541Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;pwn常用知识索引&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#pwn常用知识索引&quot;&gt;&lt;/a&gt; pwn常用知识索引&lt;/h1&gt;
+&lt;p&gt;##1.
+        
+      
+    
+    </summary>
+    
+    
+      <category term="collection" scheme="https://tlooper.github.io/tags/collection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sup-extra 栈溢出入门</title>
+    <link href="https://tlooper.github.io/sup-extra-%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8/"/>
+    <id>https://tlooper.github.io/sup-extra-栈溢出入门/</id>
+    <published>2019-09-05T03:32:00.000Z</published>
+    <updated>2019-09-05T03:33:20.867Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;浅谈pwn中的栈溢出攻击&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#浅谈pwn中的栈溢出攻击&quot;&gt;&lt;/a&gt; 浅谈pwn中的栈溢出攻击&lt;/h1&gt;
+&lt;h2 id=&quot;0-前言这部分应该是不会放出来的吐槽部分&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Pwn" scheme="https://tlooper.github.io/tags/Pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sup-extra 强连通分量</title>
+    <link href="https://tlooper.github.io/sup-extra-%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/"/>
+    <id>https://tlooper.github.io/sup-extra-强连通分量/</id>
+    <published>2019-08-16T02:55:00.000Z</published>
+    <updated>2019-08-16T03:24:05.100Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;强连通分量&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#强连通分量&quot;&gt;&lt;/a&gt; 强连通分量&lt;/h1&gt;
+&lt;h2 id=&quot;前言&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="ICPC" scheme="https://tlooper.github.io/tags/ICPC/"/>
+    
+  </entry>
   
   <entry>
     <title>sup-extra 树链剖分</title>
@@ -96,7 +171,7 @@
     <link href="https://tlooper.github.io/sup-extra-ICPCtemplate/"/>
     <id>https://tlooper.github.io/sup-extra-ICPCtemplate/</id>
     <published>2019-07-26T07:14:00.000Z</published>
-    <updated>2019-08-07T07:07:39.589Z</updated>
+    <updated>2019-08-28T06:48:25.507Z</updated>
     
     <summary type="html">
     
@@ -104,8 +179,9 @@
       
         
         
-          &lt;h1 id=&quot;板子20197&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#板子20197&quot;&gt;&lt;/a&gt; 板子——2019.7&lt;/h1&gt;
-&lt;h2 id=&quot;树论图论&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot;
+          &lt;h1 id=&quot;板子2019-summer&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#板子2019-summer&quot;&gt;&lt;/a&gt; 板子——2019 summer&lt;/h1&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&quot;树论图论&quot;&gt;&lt;a
         
       
     
@@ -293,7 +369,7 @@
     <link href="https://tlooper.github.io/HDU-1402%20A%20%20B%20Problem%20Plus%20%20FFT/"/>
     <id>https://tlooper.github.io/HDU-1402 A  B Problem Plus  FFT/</id>
     <published>2019-01-22T16:43:31.000Z</published>
-    <updated>2019-01-24T06:55:25.794Z</updated>
+    <updated>2019-08-21T02:32:17.049Z</updated>
     
     <summary type="html">
     
@@ -429,30 +505,6 @@
     
     
       <category term="skill" scheme="https://tlooper.github.io/tags/skill/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>introduction</title>
-    <link href="https://tlooper.github.io/introduction/"/>
-    <id>https://tlooper.github.io/introduction/</id>
-    <published>2018-09-10T12:15:47.000Z</published>
-    <updated>2018-09-14T10:54:31.505Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;“   
-        
-      
-    
-    </summary>
-    
-    
-      <category term="introduction" scheme="https://tlooper.github.io/tags/introduction/"/>
     
   </entry>
   

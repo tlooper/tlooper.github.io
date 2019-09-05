@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-extra 栈溢出入门 · SUP project</title><meta name="description" content="浅谈pwn中的栈溢出攻击
+ 0. 前言——这部分应该是不会放出来的吐槽部分？
+pwn这个东西真是深奥呢。目前自己对于pwn的理解也刚刚处于微妙的入门阶段。而让自己这样一个刚入门的人来写这种奇怪的推送到底能不能带来真正的意义呢……想要系统全面的了解这方面果然还是离不开CTF wiki与针对细节问题的百"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-extra 栈溢出入门</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2019-09-05</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/Pwn/" title="Pwn" class="a-tag">Pwn</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="浅谈pwn中的栈溢出攻击"><a class="markdownIt-Anchor" href="#浅谈pwn中的栈溢出攻击"></a> 浅谈pwn中的栈溢出攻击</h1>
+<h2 id="0-前言这部分应该是不会放出来的吐槽部分"><a class="markdownIt-Anchor" href="#0-前言这部分应该是不会放出来的吐槽部分"></a> 0. 前言——这部分应该是不会放出来的吐槽部分？</h2>
+<p>pwn这个东西真是深奥呢。目前自己对于pwn的理解也刚刚处于微妙的入门阶段。而让自己这样一个刚入门的人来写这种奇怪的推送到底能不能带来真正的意义呢……想要系统全面的了解这方面果然还是离不开<a href="https://ctf-wiki.github.io/ctf-wiki/pwn/readme-zh/" target="_blank" rel="noopener">CTF wiki</a>与针对细节问题的百度呢。</p>
+<p>​       说到pwn题的话，初次接触的萌新应该都是会从栈溢出这个方向开始的吧。（还不了解什么是pwn?那可以查看一下我们的<a href="https://mp.weixin.qq.com/s?__biz=MzI4NjYxNDk3Mg==&amp;mid=2247483894&amp;idx=1&amp;sn=1bc12157d3d0127d08a07be49a5e5fb9&amp;chksm=ebdb7525dcacfc33904650a13db8821525b45d55e52badb5f1f81a46ea566d14a16409028929&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1566046896114&amp;sharer_shareid=252bc2a0500f80be24dfe683440b4508#rd" target="_blank" rel="noopener">往期推送</a>。）然而该说这个入门真的只是推荐了条路线吗……作者本人作为一个懒人型萌新，还是希望有更有操作感的入门呢。那么如果你的手边正好有一台电脑，正好有闲暇时间，并且正好有时间想要体验一下栈溢出攻击的快乐，那就开始吧。</p>
+<h2 id="1-你需要做的前期准备"><a class="markdownIt-Anchor" href="#1-你需要做的前期准备"></a> 1. 你需要做的前期准备</h2>
+<p>​       首先，你需要有一个Linux系统的电脑或者一个linux系统的虚拟机。至于Linux镜像的选择的话，kali可能有更多的安全方向的预装软件，Ubuntu则更加主流，如果你遇到了操作系统层面的问题，Ubuntu系统可能更容易搜出解决方案。（不过系统级别的问题还是重装系统更快呢……反正是虚拟机）</p>
+<p>​       之后你需要安装pwntools pwndbg。这里给出指令：</p>
+<p>//这个地方应该调成代码输入的形式</p>
+<p>sudo apt install python</p>
+<p>sudo apt install python-pip</p>
+<p>sudo apt install git</p>
+<p>pip install ROPgadget</p>
+<p>pip install pwntools</p>
+<p>git clone <a href="https://github.com/pwndbg/pwndbg" target="_blank" rel="noopener">https://github.com/pwndbg/pwndbg</a></p>
+<p>cd pwndbg/</p>
+<p>./setup.sh</p>
+<p>安装完成后建议重启一下虚拟机</p>
+<h2 id="2栈溢出攻击是什么"><a class="markdownIt-Anchor" href="#2栈溢出攻击是什么"></a> 2.栈溢出攻击是什么？</h2>
+<p>​       首先各位如果是学过数据结构或者跟汇编打过交道想必对栈都并不陌生。程序有程序段，数据有数据段，缓冲区也有缓冲区的栈段。同时栈的大小众所周知是有限的，但是有时候数据的输出是无限的（误）。当读入数据时没有限制或者限制大小比栈段大小要大时都会导致缓冲区的溢出。</p>
+<p>​       我们能利用缓冲区溢出做什么呢？先来解释一下栈帧的结构。</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)这张图建议从下往上看，你写入的数据会从rsp指向的地方往上依次排列，学过汇编的小伙伴也知道在执行函数返回的ret 指令时会从栈帧中弹出父函数的地址，并且程序跳转到该地址。而我们就可以利用这一步弹出，通过缓冲区溢出来实现将程序转移到一个我们希望它去的地址。</p>
+<p>​       而做pwn题攻击的终极目标是什么呢？是取得系统的权限，即让攻击者能够执行一些指令。那我们需要控制程序跳转到哪里才能达成目的呢？针对初级的题目而言，主要是以下四种形式：</p>
+<p>\1.         ret2text：控制程序执行程序本身的代码，比如程序中已经有了system函数，我们就可以通过执行system(&quot;/bin/sh&quot;) 或 system(“sh”)实现。</p>
+<p>\2.         ret2shellcode：先写入一段能够获取shell的汇编代码，然后让程序跳到rsp指向shellcode的开头，来执行该段汇编代码。但实现该攻击需要shellcode所在的区域有课执行权限。</p>
+<p>\3.         ret2syscall：调用Linux的系统中断int 0x80实现。如果不知道linux有哪些系统中断可以查阅<a href="http://syscalls.kernelgrok.com/" target="_blank" rel="noopener">这个网址</a>。</p>
+<p>\4.         ret2libc:控制函数执行libc中的函数，返回一个函数的具体位置，诸如靠这样获得system函数的地址。</p>
+<p>这几个方法需要的前置条件各有不同，不过使用起来的复杂程度大致还是递增的，有兴趣深入了解的可以参考 <a href="https://ctf-wiki.github.io/ctf-wiki/pwn/linux/stackoverflow/stack-intro-zh/" target="_blank" rel="noopener">CTF-Wiki</a> ，并且多百度一下。</p>
+<h2 id="3-那原理知道了提供的工具要怎么使用呢"><a class="markdownIt-Anchor" href="#3-那原理知道了提供的工具要怎么使用呢"></a> 3. 那原理知道了，提供的工具要怎么使用呢？</h2>
+<p>这里以ctf-wiki上给出的ret2text例子来深入讲解一下（虽然别人CTF-wiki已经介绍了攻击步骤了……这里稍微说一下思路吧）</p>
+<p>首先拿到程序的第一步，一定是确定一个做题的方向。首先使用checksec看一下最基本的文件信息。</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image003.png)</p>
+<p>我们对checksec显示的内容做一个大致的解释：</p>
+<p>​       Arch: 程序使用的架构</p>
+<p>​       canary：栈保护，原理是用一个标记位放在栈中，用来防止缓冲区溢出攻击</p>
+<p>NX（DEP）：设置栈段不可执行，enable时开启保护，不能执行代码</p>
+<p>PIE（ASLR）：内存地址随机化。三种情况：</p>
+<p>0 - 表示关闭进程地址空间随机化。</p>
+<p>1 - 表示将mmap的基址，stack和vdso页面随机化。</p>
+<p>2 - 表示在1的基础上增加栈（heap）的随机化。</p>
+<p>RELRO：partial RELRO说明对got表有读写权限，FULL RELRO 则无法修改got表</p>
+<p>所以该程序只启用了栈段不可执行的保护，我们不能在栈段放入sehllcode进行运行，而其他的攻击手段都可以使用。</p>
+<p>知道了大概的方向之后就可以用IDA查看源码了。</p>
+<p>另外如果想使用IDA远程linux调试32位程序时会需要libstdc++.so.6的库文件。ubuntu环境下安装该库：apt-get install lib32stdc++6。如何使用远程调试可<a href="https://blog.csdn.net/lacoucou/article/details/71079552" target="_blank" rel="noopener">参考博客</a>。</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image005.png)</p>
+<p>可以看出来这个程序不仅有system函数，并且输入system的参数都替我们准备好了，否则通常情况下是需要自己写入或寻找其他地方的字符的。在动态调试时可以看到这个的地址：</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png)</p>
+<p>然后我们观察一下利用栈溢出漏洞的输入函数：</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png)</p>
+<p>左侧eax寄存器的值是给gets作为输入数据的起点，而ebp代表的是当前的栈底。最后程序进行的步骤是leave,ret所以我们构造的填充用的输入应该有 （eax与ebp间的插值）+leave时赋给ebp的字节数，即0x80+4个字节。</p>
+<p>在平常构造跳转地址的时候还要注意，若是32位程序，是将参数放在栈中的，可以直接利用栈溢出进行修改；但是64位程序的函数前6个参数，则是分别存储在RDI, RSI, RDX, RCX, R8, R9这六个寄存器当中的。那么如何改变寄存器的值呢？我们可以使用ROPgadget工具来实现。</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png)</p>
+<p>当然至于ROPgadget更进一步的使用就需要自己去百度了。</p>
+<h2 id="4-接下来就是最后一步了"><a class="markdownIt-Anchor" href="#4-接下来就是最后一步了"></a> 4. 接下来就是最后一步了！</h2>
+<p>当你成功找到了栈溢出攻击的方法，最后一步就是构造脚本了。我们使用pwntools这个现成的包来构造攻击脚本。pwntools包的使用分为以下几步：</p>
+<p>\1.         构造context。设定程序执行的环境与程序体系结构。常见的体系结构即 i386 与 amd64</p>
+<p>\2.         建立连接。与本地文件进行交互时使用process(“<em>filename</em>”)，与远程交互时使用 remote(ip=&quot;&quot;,port=&quot;&quot;)</p>
+<p>\3.         构造一个输入。这个就是具体题目具体分析了。基本套路就是前面的缓冲区与寄存器部分可以随意填充，而只需要保证跳转地址是你需要的跳转地址即可。注意跳转地址应使用p64()或p32()包裹。</p>
+<p>\4.         输入进去并进行交互。注意交互时如果没有正确实现提权是不会有结果的，可以用ls指令或echo &quot;something&quot;指令试一下。</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image011.png)</p>
+<p>运行结果</p>
+<p>![img](file:///C:/Users/HP/AppData/Local/Temp/msohtmlclip1/01/clip_image013.png)</p>
+<p>这样就是做一个Pwn题的大概流程了，各位有没有觉得有趣呢？有趣的话可以看看入门路线进行更系统全面的学习。</p>
+<p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-栈溢出入门/%20SUP project%20sup-extra 栈溢出入门" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/sup-006/" title="sup-006 pwn常用知识索引"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: sup-006 pwn常用知识索引</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-强连通分量/" title="sup-extra 强连通分量">Next post: sup-extra 强连通分量&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
