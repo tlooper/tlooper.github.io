@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-extra 二进制组周练题解汇总 · SUP project</title><meta name="description" content="二进制组周练题解汇总
+ 2019-9-11 ollvm混淆
+关于ollvm的混淆所参考的博客，感觉其中的使用部分非常有趣。
+该博客中指出原本的ollvm工具提供了三种混淆方式：控制流扁平化、指令替换、虚假控制流程。而本次周练接触到的就是控制流扁平化。控制流扁平化的实现实际上就是将一些if-else语"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-extra 二进制组周练题解汇总</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2019-09-16</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/security-binary/" title="security,binary" class="a-tag">security,binary</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="二进制组周练题解汇总"><a class="markdownIt-Anchor" href="#二进制组周练题解汇总"></a> 二进制组周练题解汇总</h1>
+<h2 id="2019-9-11-ollvm混淆"><a class="markdownIt-Anchor" href="#2019-9-11-ollvm混淆"></a> 2019-9-11 ollvm混淆</h2>
+<p>关于ollvm的混淆所参考的<a href="https://www.jianshu.com/p/e0637f3169a3" target="_blank" rel="noopener">博客</a>，感觉其中的使用部分非常有趣。</p>
+<p>该博客中指出原本的ollvm工具提供了三种混淆方式：控制流扁平化、指令替换、虚假控制流程。而本次周练接触到的就是控制流扁平化。控制流扁平化的实现实际上就是将一些if-else语句，嵌套成do-while形式。</p>
+<p>首先打开IDA查看代码。<img src="/sup-extra-binary/screenshot/2019-09-11-1.png" alt="1"></p>
+<p>很显然这个程序是用fencode与encode两个函数对输入字符串进行加密后再与s2串进行比较。然后先进入fencode看一下是怎么加密的。</p>
+<p>不过fencode里面的整个汇编代码太长了。秉持着太长不看的原则我们F5看一下伪C代码。伪C代码长什么样这里就不贴图了。总的来说也正如上文所说，伪C代码中有大量的嵌套的do-while语句。<img src="/sup-extra-binary/screenshot/2019-09-11-2.png" alt="伪C代码节选"></p>
+<p>而这个代码稍加分析即可得知，它利用v8的值作为跳转的信号，在各个while语句间进行跳转。所以我们实际上只需要关注v8的值的改变过程，还原出来程序的原本逻辑，就能得出结果。我所采用的方法也是最原始的方法，直接以v8的初始值为开始，一边追踪v8的改变一边做记录，这里简单贴一下自己的记录：</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fencode</span>:</span>
+    s=input()
+    v15=len(s)
+    flag=<span class="hljs-number">-1</span><span class="hljs-comment">#v14</span>
+    mark=<span class="hljs-number">0</span>
+    a2=[]
+    <span class="hljs-keyword">if</span>(v15!=<span class="hljs-number">24</span>):
+        <span class="hljs-comment">#-1090034712</span>
+        flag=<span class="hljs-number">0</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><span class="hljs-comment">#1267770526</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-comment">#-1770272074</span>
+        v12=<span class="hljs-number">0</span>
+        <span class="hljs-comment">#789829600</span>
+        <span class="hljs-keyword">if</span> v12&lt;<span class="hljs-number">6</span>:
+            <span class="hljs-comment">#867656585</span>
+            v11=<span class="hljs-number">0</span>
+            <span class="hljs-comment">#288393639</span>
+            <span class="hljs-keyword">if</span> v11&lt;<span class="hljs-number">4</span>:
+                <span class="hljs-comment">#1085938007</span>
+                v10=<span class="hljs-number">0</span>
+                <span class="hljs-keyword">for</span> v9 <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>) :
+                    <span class="hljs-comment">#117331278</span>
+                    v10+=s[<span class="hljs-number">4</span>*v12+v9]*m[<span class="hljs-number">4</span>*v11+v9]
+                    <span class="hljs-comment">#-1647015695</span>
+                    <span class="hljs-comment">#-2141009135</span>
+                a2[mark++]=v10%<span class="hljs-number">127</span>
+
+            <span class="hljs-keyword">else</span> :
+                ++v12<span class="hljs-comment">#总之就是这里的循环</span>
+                <span class="hljs-comment">#1667780839</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment">#-2078944754</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><span class="hljs-comment">#126770526</span>
+</code></pre>
+<p>还原程序的逻辑过程是很繁琐的过程，这里直接给出两个程序的逻辑还原后结果：</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fendcode2</span><span class="hljs-params">()</span>:</span>
+    m=[[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-5</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-3</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">2</span>]]
+    mark=<span class="hljs-number">0</span>
+    s=input()
+    <span class="hljs-keyword">if</span> len(s)!=<span class="hljs-number">24</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">6</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>):
+            ch=<span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>):
+                ch+=s[<span class="hljs-number">4</span>*i+k]*m[j][k]
+            a2[mark]=ch%<span class="hljs-number">127</span>
+            mark+=<span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encode2</span><span class="hljs-params">(ss,l,news)</span>:</span>
+    a=<span class="hljs-string">'FeVYKw6a0lDIOsnZQ5EAf2MvjS1GUiLWPTtH4JqRgu3dbC8hrcNo9/mxzpXBky7+'</span>
+    mark=<span class="hljs-number">0</span>
+    i=<span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i&lt;l:
+        x1=ss[i]<span class="hljs-comment">#v21</span>
+        x2=ss[i+<span class="hljs-number">1</span>]<span class="hljs-comment">#v20</span>
+        x3=ss[i+<span class="hljs-number">2</span>]<span class="hljs-comment">#v17整个数组开大一点保证后面是0</span>
+        i+=<span class="hljs-number">3</span>
+        news[mark]=a[(x1&gt;&gt;<span class="hljs-number">2</span>)&amp;<span class="hljs-number">0x3f</span>]
+        news[mark+<span class="hljs-number">1</span>]=a[(x2&gt;&gt;<span class="hljs-number">4</span>)|(x1&lt;&lt;<span class="hljs-number">4</span>)&amp;<span class="hljs-number">0x3f</span>]
+        news[mark+<span class="hljs-number">2</span>]=a[(x3&gt;&gt;<span class="hljs-number">6</span>)|(x2&lt;&lt;<span class="hljs-number">2</span>)&amp;<span class="hljs-number">0x3f</span>]
+        news[mark+<span class="hljs-number">3</span>]=a[x3&amp;<span class="hljs-number">0x3f</span>]
+        mark+=<span class="hljs-number">4</span>
+    <span class="hljs-keyword">if</span> mark%<span class="hljs-number">3</span>:
+        news[mark<span class="hljs-number">-1</span>]=<span class="hljs-string">'='</span>
+</code></pre>
+<p>还原了加密逻辑之后整个程序就很显然了，fencode函数做了一个矩阵乘法，将输入的24个字符的字符串视为4*6的矩阵，与矩阵m相乘得到新的矩阵，然后进入encode2按照题目的规则进行一个base64编码，再与题目自身的base64编码作比较。</p>
+<p>所以我们解题的思路也很清晰了。先进行一个base64解码，再将解码过后的结果乘以m的逆矩阵，就能得到结果。不过注意到fencode的加密过程不是普通矩阵乘法的行与列相乘，而更像是行与行相乘，一开始我还考虑过会不会对结果产生影响。不过事实证明虽然调换了运算顺序，但逆矩阵依然能够发挥作用。毕竟矩阵的转置的逆矩阵=矩阵的逆矩阵的转置嘛。不理解的话可以自己写一下试试。 另外至于如何求矩阵的逆可以参考另一篇<a href="/../sup-007">博客</a>。所以这里只给出前两个的解密算法。</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decode1</span><span class="hljs-params">(st)</span>:</span>
+    arr1=[]
+    alpha = <span class="hljs-string">'FeVYKw6a0lDIOsnZQ5EAf2MvjS1GUiLWPTtH4JqRgu3dbC8hrcNo9/mxzpXBky7+'</span>
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> st:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(alpha)):
+            <span class="hljs-keyword">if</span> ch==alpha[i]:
+                arr1.append(i)
+                <span class="hljs-keyword">break</span>
+    print(arr1,len(arr1))
+    mark=<span class="hljs-number">0</span>
+    arr2=[]
+    <span class="hljs-keyword">while</span> mark&lt;len(arr1):
+        arr2.append(((arr1[mark]&lt;&lt;<span class="hljs-number">2</span>)|(arr1[mark+<span class="hljs-number">1</span>]&gt;&gt;<span class="hljs-number">4</span>))&amp;<span class="hljs-number">0xff</span>)
+        arr2.append(((arr1[mark+<span class="hljs-number">1</span>]&lt;&lt;<span class="hljs-number">4</span>)|(arr1[mark+<span class="hljs-number">2</span>]&gt;&gt;<span class="hljs-number">2</span>))&amp;<span class="hljs-number">0xff</span>)
+        arr2.append(((arr1[mark+<span class="hljs-number">2</span>]&lt;&lt;<span class="hljs-number">6</span>)|arr1[mark+<span class="hljs-number">3</span>])&amp;<span class="hljs-number">0xff</span>)
+        mark+=<span class="hljs-number">4</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(arr2)):<span class="hljs-comment">#mark1</span>
+        <span class="hljs-keyword">if</span> arr2[i]&gt;<span class="hljs-number">127</span>:
+            arr2[i]=<span class="hljs-number">-256</span>+arr2[i]
+    print(arr2,len(arr2))
+    <span class="hljs-keyword">return</span> arr2
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decode2</span><span class="hljs-params">(arr,rev_m)</span>:</span>
+    res=[]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">6</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>):
+            ch=<span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>):
+                ch+=arr[<span class="hljs-number">4</span>*i+k]*rev_m[j][k]
+            res.append(ch)
+    <span class="hljs-keyword">return</span> res
+</code></pre>
+<p>另外正所谓真正的高手是不用F5的，我这次也算是吸取了教训。在decode1函数中原本是没有mark1的处理的，但当我运行解密后却发现有的值是超过了127的，明明伪C代码里面有一个%127的操作，理论上不会超过127才对。并且如果我将decode1得到的数组丢进decode2中时，会发现有一部分的解密结果是对的，比如结尾是‘}’，开头为f。而当我重新回头看fencode的汇编代码时我发现，fencode在运算的时候是使用的int型，然后除以127之后截断成了byte型，所以实际上大于127的值均为负数。所以考虑到有正有负这一点，加上mark1部分的处理后就能得到正确的flag了。最后的flag是<code>flag{dO_y0U_KNoW_0IlVm?}</code></p>
+<p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-extra-binary/%20SUP project%20sup-extra 二进制组周练题解汇总" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-007/" title="sup-007 线性代数相关脚本">Next post: sup-007 线性代数相关脚本&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
