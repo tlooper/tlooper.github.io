@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-008 从零开始配置ubuntu服务器 · SUP project</title><meta name="description" content="从零开始配置服务器
+
+
+ 终端颜色调整
+如果想要启用颜色模式，需要打开 ~/.bashrc文件，将force_color_promot=yes前面的注释去掉即可。如果有自定义颜色需求自行搜索指令。
+ pwntools安装
+sudo apt-get install python python-pip "><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-008 从零开始配置ubuntu服务器</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2019-09-24</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/collection/" title="collection" class="a-tag">collection</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="从零开始配置服务器"><a class="markdownIt-Anchor" href="#从零开始配置服务器"></a> 从零开始配置服务器</h1>
+<!--由于自己再次弄崩了服务器故留下此文档备用，主要是搜集各种需要的配置-->
+<!--不过今天太困所以明天再说by 2019-9-24 1:14-->
+<h2 id="终端颜色调整"><a class="markdownIt-Anchor" href="#终端颜色调整"></a> 终端颜色调整</h2>
+<p>如果想要启用颜色模式，需要打开 <code>~/.bashrc</code>文件，将force_color_promot=yes前面的注释去掉即可。如果有自定义颜色需求自行搜索指令。</p>
+<h2 id="pwntools安装"><a class="markdownIt-Anchor" href="#pwntools安装"></a> pwntools安装</h2>
+<pre class="highlight"><code class>sudo apt-get install python python-pip python-dev git libffi-dev libssl-dev libffi-dev build-essential
+pip install --upgrade pip
+pip install --upgrade pwntools
+</code></pre>
+<p>目前遇到的问题是<code>pip install --upgrade pip</code>后pip 不能执行,报错<code>cannot import main</code>，采取的方法是修改<code>/usr/bin/pip</code>。</p>
+<p>方法一：<br>
+将原来的<code>from pip import main</code> 改为<code>from pip._internal import main</code><br>
+方法二：<br>
+将原来的：</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> pip <span class="hljs-keyword">import</span> main
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    sys.exit(main())改为：
+</code></pre>
+<p>改为：</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> pip <span class="hljs-keyword">import</span> __main__
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    sys.exit(__main__._main())
+</code></pre>
+<p>另外注意修改后的main是两个下划线。<a href="https://blog.csdn.net/zong596568821xp/article/details/80410416" target="_blank" rel="noopener">参考博客</a></p>
+<h2 id="pwndbg-插件安装"><a class="markdownIt-Anchor" href="#pwndbg-插件安装"></a> pwndbg 插件安装</h2>
+<pre class="highlight"><code class="shell">git clone https://github.com/pwndbg/pwndbg
+cd pwndbg
+./setup.sh
+cd ..
+</code></pre>
+<h2 id="libcsearcher-插件安装"><a class="markdownIt-Anchor" href="#libcsearcher-插件安装"></a> LibcSearcher 插件安装</h2>
+<pre class="highlight"><code class="shell">git clone https://github.com/lieanu/LibcSearcher.git
+cd LibcSearcher
+sudo python setup.py develop
+cd ..
+</code></pre>
+<h2 id="ubuntu-x64上运行32位程序"><a class="markdownIt-Anchor" href="#ubuntu-x64上运行32位程序"></a> ubuntu x64上运行32位程序</h2>
+<pre class="highlight"><code class="shell">sudo apt-get install lib32stdc++6
+</code></pre>
+<h2 id="putty-初次配置及使用"><a class="markdownIt-Anchor" href="#putty-初次配置及使用"></a> Putty 初次配置及使用</h2>
+<p>基本上如果能用Xshell不建议用这个软件，但谁叫这软件免费呢……</p>
+<h3 id="1-设置私钥"><a class="markdownIt-Anchor" href="#1-设置私钥"></a> 1. 设置私钥</h3>
+<p>如果你没有私钥可以使用puttygen程序来生成，生成后公钥保存在服务器段，私钥保存在本地即可。</p>
+<p>导入OpenSSH可以使用 load键，然后直接Save Private Key 即可；将ppk转换成OpenSSH格式则要你在菜单栏的conversions中选择export OpenSSH key导出。</p>
+<h3 id="2-建立连接"><a class="markdownIt-Anchor" href="#2-建立连接"></a> 2. 建立连接</h3>
+<p>connection -&gt; data :Auto-login username 设置登录名</p>
+<p>connection -&gt; SSH -&gt; Auth: Private key file: 设置私钥的地址</p>
+<p>Session: 输入ip 端口号，并给配置命名后保存配置。</p>
+<p>设置完成后就可以Load配置以启动了。</p>
+<h3 id="3-文件传输"><a class="markdownIt-Anchor" href="#3-文件传输"></a> 3. 文件传输</h3>
+<p>pscp <em>local_file</em> usrname@ip:<em>remote_file</em> 上传到相应服务器的地址下</p>
+<p>pscp  usrname@ip:<em>remote_file</em> <em>local_file</em> 下载到本地。</p>
+<p>执行下载指令需要安装 <code>sudo apt install putty-tools</code></p>
+<p></p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-008/%20SUP project%20sup-008 从零开始配置ubuntu服务器" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-extra-binary/" title="sup-extra 二进制组周练题解汇总">Next post: sup-extra 二进制组周练题解汇总&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>

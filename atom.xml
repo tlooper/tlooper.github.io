@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://tlooper.github.io/"/>
-  <updated>2019-09-16T09:09:23.916Z</updated>
+  <updated>2019-09-23T17:51:34.814Z</updated>
   <id>https://tlooper.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sup-008 从零开始配置ubuntu服务器</title>
+    <link href="https://tlooper.github.io/sup-008/"/>
+    <id>https://tlooper.github.io/sup-008/</id>
+    <published>2019-09-23T17:10:39.000Z</published>
+    <updated>2019-09-23T17:51:34.814Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;从零开始配置服务器&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#从零开始配置服务器&quot;&gt;&lt;/a&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="collection" scheme="https://tlooper.github.io/tags/collection/"/>
+    
+  </entry>
   
   <entry>
     <title>sup-extra 二进制组周练题解汇总</title>
@@ -71,7 +95,7 @@
     <link href="https://tlooper.github.io/sup-006/"/>
     <id>https://tlooper.github.io/sup-006/</id>
     <published>2019-09-05T03:45:00.000Z</published>
-    <updated>2019-09-05T03:48:11.541Z</updated>
+    <updated>2019-09-28T07:02:05.337Z</updated>
     
     <summary type="html">
     
@@ -476,30 +500,6 @@
         
         
           &lt;h1 id=&quot;codeforces-600e&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#codeforces-600e&quot;&gt;&lt;/a&gt; &lt;a href=&quot;http://codeforces.com/problemset/problem/600/E&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="ICPC" scheme="https://tlooper.github.io/tags/ICPC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>sup-extra HDU-1512 Monkey King 左偏树</title>
-    <link href="https://tlooper.github.io/HDU-1512%20Monkey%20King%20%E5%B7%A6%E5%81%8F%E6%A0%91/"/>
-    <id>https://tlooper.github.io/HDU-1512 Monkey King 左偏树/</id>
-    <published>2019-01-19T07:00:00.000Z</published>
-    <updated>2019-01-22T16:41:03.035Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;hdu-1512&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#hdu-1512&quot;&gt;&lt;/a&gt; &lt;a href=&quot;http://acm.hdu.edu.cn/showproblem.php?pid=1512&quot;
         
       
     
