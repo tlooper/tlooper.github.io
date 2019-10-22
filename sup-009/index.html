@@ -1,14 +1,74 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title>sup-009 符号化执行与Z3约束 · SUP project</title><meta name="description" content="符号化执行与Z3约束
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Time Looper"><title> · SUP project</title><meta name="description" content="符号化执行与Z3约束
  0.符号化执行简介
 首先我们需要明白，什么是符号化执行？符号化执行，简单来说就是一种自动化逆向的手段，具体实现过程：
 将输入的参数变成未知数，众所周知输入的参数不同会导致在某些if处使程序导向完全不同的方向，进而影响结果。而如果我们将每次程序的抉择看作是一个方程，那么从我们希"><meta name="keywords" content><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>sup-009 符号化执行与Z3约束</a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2019-10-16</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/reference/" title="reference" class="a-tag">reference</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="符号化执行与z3约束"><a class="markdownIt-Anchor" href="#符号化执行与z3约束"></a> 符号化执行与Z3约束</h1>
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">Site-T</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">SUP-project</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li class="soc"><a href="https://tlooper.github.io/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a></a></p><p class="post-meta"><span class="date meta-item">发布于&nbsp;2019-10-16</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/reference/" title="reference" class="a-tag">reference</a><span>&nbsp;</span></span></p><p class="post-abstract"></p><h1 id="符号化执行与z3约束"><a class="markdownIt-Anchor" href="#符号化执行与z3约束"></a> 符号化执行与Z3约束</h1>
 <h2 id="0符号化执行简介"><a class="markdownIt-Anchor" href="#0符号化执行简介"></a> 0.符号化执行简介</h2>
 <p>首先我们需要明白，什么是符号化执行？符号化执行，简单来说就是一种自动化逆向的手段，具体实现过程：</p>
 <p>将输入的参数变成未知数，众所周知输入的参数不同会导致在某些if处使程序导向完全不同的方向，进而影响结果。而如果我们将每次程序的抉择看作是一个方程，那么从我们希望的结果往回倒推，就能得到一组方程组，如果解方程就能得到我们需要的结果。</p>
 <p>不过符号执行所面临的最大的困境就是，每次抉择会派生出两个及以上的分支，导致最后的状态数是指数级增长的，如果程序里面有大型的for循环效率可能就会非常低。</p>
-<h2 id="1angr的使用"><a class="markdownIt-Anchor" href="#1angr的使用"></a> 1.angr的使用</h2>
-<h2 id="2-z3约束"><a class="markdownIt-Anchor" href="#2-z3约束"></a> 2. Z3约束</h2>
+<h2 id="1-angr的安装"><a class="markdownIt-Anchor" href="#1-angr的安装"></a> 1. angr的安装</h2>
+<p>虽然说一般来说安装板块只要参考官方文档就不会有问题，但是自己安装angr的时候确实的遇到了许多问题，所以这里也是稍微记录一下。</p>
+<p>虚拟环境很重要啊。记得保证自己的python3装了virtualenv这个模块，然后要按照下面的方式在一个虚拟环境中安装angr这个库。因为有可能会跟你的现有的库产生冲突。</p>
+<pre class="highlight"><code class="shell">mkdir angr_use
+cd angr_use
+virtualenv angr
+source angr/bin/activate
+pip install angr
+<span class="hljs-meta">deactivate#</span><span class="bash">退出指令</span>
+</code></pre>
+<h2 id="2angr的使用"><a class="markdownIt-Anchor" href="#2angr的使用"></a> 2.angr的使用</h2>
+<pre class="highlight"><code class="mermaid">graph TD
+fa[angr]--&gt;a1
+fa--&gt; son1[loader]
+fa--&gt;son2[analyses]
+a1[factory]--&gt;a2[blocks]
+a1--&gt; a3[states]
+a1--&gt; a4[simulation_manager]
+</code></pre>
+<p>Loader: 总之就是加载的一个东西，包含了程序的一些基本信息，感觉没什么用呢</p>
+<p>factory: angr做的函数封装，要用的话基本上用的就是这玩意了</p>
+<p>​	blocks:angr 的代码分析是通过将程序划分成不同的块来进行实现的。使用factory.block(addr)可以生成addr处开始的block</p>
+<p>​	states: 全称是simulated program state ,也就是一个虚拟的程序状态。angr用state这个类来存储一个程序某一时刻的虚拟状态，比如寄存器、内存什么的。为了存储寄存器，angr会使用一个叫做bitvector的玩意，简写就是BV。这玩意是可以用eval变成一个int的。使用BV的一个重要的目的就是为了符号执行，这样我们可以给某个变量一个变量名而非一个具体值。</p>
+<p>​	simulation manager: 东西如其名，就是一个模拟的玩意。你可以使用一个state或者一个list的state来创建一个simulation manager。你想要得到结果就需要让程序实际地跑起来，就需要这个玩意。</p>
+<p>Analyses: 给了一票的分析函数。这里的分析函数输出的是类似数据流图之类的东西，需要的时候再去查阅好了。</p>
+<p>CLE （can load everything): 看名字就懂了，一个可以装一切的loader。另外angr是可以安装在windows上执行的。虽然不知道能不能在windows上分析一个linux文件，但似乎angr也给出了分析pe文件的函数。不过这个loader可以用于获取文件中函数的地址，还可以拿到各种段地址什么的。其次的就是对各种project和object进行操作了，看上去应该能用来得到类似于system函数的地址。</p>
+<p>关于Project的一些选项：</p>
+<ul>
+<li>auto_load_libs:是否自动加载共享库。</li>
+<li>except_missing_libs:没找到共享库就丢个错出来</li>
+<li>force_load_libs:强制装载,</li>
+<li>skip_libs:跳过就完事了</li>
+<li>ld_path：给一个地址让程序去找找看共享库</li>
+</ul>
+<p>一个不需要提前输入参数的模板：</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> angr
+proj = angr.Project(<span class="hljs-string">'./filename'</span>,auto_load_libs=<span class="hljs-keyword">False</span>)
+state = proj.factory.entry_state()
+simgr=proj.factory.simgr(state)
+simgr.explore(find=<span class="hljs-number">0x400844</span>,avoid=<span class="hljs-number">0x400855</span>)
+<span class="hljs-keyword">print</span> simgr.found[<span class="hljs-number">0</span>].posix.dumps(<span class="hljs-number">0</span>)
+</code></pre>
+<p>需要提供参数的模板：<!--./ais3_crackme--></p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> angr,claripy
+proj = angr.Project(<span class="hljs-string">'./filename'</span>,auto_load_libs=<span class="hljs-keyword">False</span>)
+argv1 = claripy.BVS(<span class="hljs-string">'argv1'</span>,<span class="hljs-number">50</span>*<span class="hljs-number">8</span>)
+state = proj.factory.entry_state(args=[<span class="hljs-string">'./filename'</span>,argv1])
+simgr = proj.factory.simgr(state)
+simgr.explore(find=<span class="hljs-number">0x400602</span>,avoid=<span class="hljs-number">0x40060E</span>)
+<span class="hljs-keyword">print</span> (simgr.found[<span class="hljs-number">0</span>].solver.eval(argv1,cast_to=bytes))
+
+</code></pre>
+<p><strong>分步骤的angr使用指南</strong></p>
+<ol>
+<li>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> angr
+proj = angr.Project(<span class="hljs-string">''</span>)
+</code></pre>
+</li>
+<li></li>
+</ol>
+<h2 id="3-z3约束"><a class="markdownIt-Anchor" href="#3-z3约束"></a> 3. Z3约束</h2>
 <p>使用时的代码模板：</p>
 <pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> z3 <span class="hljs-keyword">import</span> *
 input=[BitVec(<span class="hljs-string">'input_%d'</span>%i,<span class="hljs-number">8</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>)]<span class="hljs-comment">#char input[32]</span>
@@ -21,4 +81,4 @@ s.add(.....)
     print(m)
     print(repr(<span class="hljs-string">""</span>.join([chr(m[input[i]].as_long())<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>)])))
 </code></pre>
-<p></p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-009/%20SUP project%20sup-009 符号化执行与Z3约束" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-008/" title="sup-008 从零开始配置ubuntu服务器">下一篇: sup-008 从零开始配置ubuntu服务器&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
+<p></p></div><div class="share"><span>分享到</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://tlooper.github.io/sup-009/%20SUP project%20" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/sup-008/" title="sup-008 从零开始配置ubuntu服务器">下一篇: sup-008 从零开始配置ubuntu服务器&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2019&nbsp;<a target="_blank" href="https://tlooper.github.io" rel="noopener noreferrer">Time Looper</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
