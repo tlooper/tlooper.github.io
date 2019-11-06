@@ -24,7 +24,12 @@ fa--&gt; son1[loader]
 fa--&gt;son2[analyses]
 a1[factory]--&gt;a2[blocks]
 a1--&gt; a3[states]
+son1--&gt;a3
 a1--&gt; a4[simulation_manager]
+a4--&gt;a5[stash]
+a4--&gt;a6[execution engine]
+a3--&gt;b1[successors]
+a3--&gt;b2[solver]
 </code></pre>
 <p>Loader: 总之就是加载的一个东西，包含了程序的一些基本信息，感觉没什么用呢</p>
 <p>factory: angr做的函数封装，要用的话基本上用的就是这玩意了</p>
@@ -32,7 +37,8 @@ a1--&gt; a4[simulation_manager]
 <p>​	states: 全称是simulated program state ,也就是一个虚拟的程序状态。angr用state这个类来存储一个程序某一时刻的虚拟状态，比如寄存器、内存什么的。为了存储寄存器，angr会使用一个叫做bitvector的玩意，简写就是BV。这玩意是可以用eval变成一个int的。使用BV的一个重要的目的就是为了符号执行，这样我们可以给某个变量一个变量名而非一个具体值。</p>
 <p>​	simulation manager: 东西如其名，就是一个模拟的玩意。你可以使用一个state或者一个list的state来创建一个simulation manager。你想要得到结果就需要让程序实际地跑起来，就需要这个玩意。</p>
 <p>Analyses: 给了一票的分析函数。这里的分析函数输出的是类似数据流图之类的东西，需要的时候再去查阅好了。</p>
-<p>CLE （can load everything): 看名字就懂了，一个可以装一切的loader。另外angr是可以安装在windows上执行的。虽然不知道能不能在windows上分析一个linux文件，但似乎angr也给出了分析pe文件的函数。不过这个loader可以用于获取文件中函数的地址，还可以拿到各种段地址什么的。其次的就是对各种project和object进行操作了，看上去应该能用来得到类似于system函数的地址。</p>
+<h3 id="cle"><a class="markdownIt-Anchor" href="#cle"></a> CLE</h3>
+<p>（can load everything): 看名字就懂了，一个可以装一切的loader。另外angr是可以安装在windows上执行的。虽然不知道能不能在windows上分析一个linux文件，但似乎angr也给出了分析pe文件的函数。不过这个loader可以用于获取文件中函数的地址，还可以拿到各种段地址什么的。其次的就是对各种project和object进行操作了，看上去应该能用来得到类似于system函数的地址。</p>
 <p>关于Project的一些选项：</p>
 <ul>
 <li>auto_load_libs:是否自动加载共享库。</li>
@@ -41,6 +47,77 @@ a1--&gt; a4[simulation_manager]
 <li>skip_libs:跳过就完事了</li>
 <li>ld_path：给一个地址让程序去找找看共享库</li>
 </ul>
+<h3 id="solver"><a class="markdownIt-Anchor" href="#solver"></a> solver</h3>
+<p>首先是有关bitvector的使用。solver是基于state的，生成bv时可以使用<code>state.solver.BVV(num,bit)</code>来实现，你可以任意规定位数，并且可以进行零扩展或者符号扩展，使用<code>zero_extend(num)sign_extend(num)</code>来实现拓展。如果你需要设置一个固定位数的变量则需要使用<code>BVS('varname',bit)</code>来实现。bitvector的比较中会将负数当作无符号数来进行。所以需要用SGT()函数。（signed greater-than)的缩写。相似的还有<code>SGE()SLE()SLT()UGE()UGT()ULE()ULT()</code>这几个。有关浮点数的部分说实话感觉用到再说吧，既然你要用浮点数也要同样承受浮点数的精度丢失问题。</p>
+<p>angr的solver engine是单独取名叫Claripy的东西，所以用的时候一般都要包括这个包。</p>
+<p>​	关于eval的使用：eval会给出一个可能解，但是还有其他的用法：</p>
+<ul>
+<li>
+<p>solver.eval_one(expression)</p>
+</li>
+<li>
+<p>solver.eval_upto(expresssion,n)</p>
+</li>
+<li>
+<p>solver.eval_atleast(expression,n)</p>
+</li>
+<li>
+<p>solver.eval_exact(expression,n)</p>
+</li>
+<li>
+<p>solver.eval_min(expression)</p>
+</li>
+<li>
+<p>solver.eval_max(expression)</p>
+<p>同时还有一个参数extra_constraints 和cast_to。extra_constraints会给当前的解提供额外的约束而不加到state当中。cast_to可以设置为int 或bytes来控制输出形式。</p>
+</li>
+</ul>
+<h3 id="state"><a class="markdownIt-Anchor" href="#state"></a> state</h3>
+<p>状态这玩意也没什么好说的</p>
+<ul>
+<li>
+<p><code>.blank_state()</code>用空白状态创建，即数据都没初始化</p>
+</li>
+<li>
+<p><code>.entry_state()</code>构造一个停在入口点的状态</p>
+</li>
+<li>
+<p><code>.full_init_state()</code>执行了一系列初始化工作，比如共享库构造函数或预初始化程序</p>
+</li>
+<li>
+<p><code>.call_state()</code>构造一个准备去执行某个函数的状态。</p>
+<p>可以传进去的参数：</p>
+<p>addr来指定确切的地址</p>
+<p>args来传递参数list，env来传递环境变量的dictionary</p>
+<p>可提供<code>argc</code>给<code>entry_state</code>&amp;<code>full_init_state</code>,但不得多于传入args的个数</p>
+</li>
+</ul>
+<p>state这玩意可以各种回溯历史，或者复制或查看堆栈，还有各种对内存的操作。</p>
+<h3 id="simulation-manager"><a class="markdownIt-Anchor" href="#simulation-manager"></a> simulation manager</h3>
+<p>这玩意可以说是核心中的核心部件了。利用它生成的状态都被存在stash中，默认生成的是active stash。除此之外还有deadended pruned uncontained unsat</p>
+<ul>
+<li>
+<p><code>.step()</code> 向前前进一个块</p>
+</li>
+<li>
+<p><code>.run()</code>直接执行到底</p>
+</li>
+<li>
+<p><code>.explore()</code>可以执行find和avoid，进行剪枝</p>
+<p>然后你可以给搜索提供一些优先的参数，比如按照DFS顺序、监控内存、控制步数控制循环什么的</p>
+</li>
+</ul>
+<h3 id="execution-engine"><a class="markdownIt-Anchor" href="#execution-engine"></a> execution engine</h3>
+<p>angr的底层实现，靠一系列的引擎来实现不同的操作。而对一个状态，为了实现每个引擎挨个尝试，你可以使用<code>project.factory.successors(state,**kwargs)</code>。而后继状态（successor state)分为五类：</p>
+<ul>
+<li>successors: 就是一般的后继了，如果一个正常执行且可能性小于256的后继就会归在其中</li>
+<li>unsat_successors:不满足的后继，往往是出现了错误的</li>
+<li>flat_successors:如果一个状态是含有指针的，那么会将它扁平化，即将每个不同的指针值均作为一种后继，然而最多只会是256个</li>
+<li>unconstrained_successors:如果一个指令指针的解多于256种，往往是因为其数据不受约束（栈溢出什么的），所以会将其放在其中。</li>
+<li>all_successors：看名字就知道是前面几个的集合体。</li>
+</ul>
+<p>除此之外angr也提供了一套完整的打断点的方法，你可以侦测各种情况来下断点，不过这玩意实在是有点复杂……可能性太多，而且你用符号执行的时候也不一定会用到，目前先暂时搁置。</p>
+<h2 id="3angr代码示例"><a class="markdownIt-Anchor" href="#3angr代码示例"></a> 3.angr代码示例</h2>
 <p>一个不需要提前输入参数的模板：</p>
 <pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> angr
 proj = angr.Project(<span class="hljs-string">'./filename'</span>,auto_load_libs=<span class="hljs-keyword">False</span>)
@@ -68,7 +145,7 @@ proj = angr.Project(<span class="hljs-string">''</span>)
 </li>
 <li></li>
 </ol>
-<h2 id="3-z3约束"><a class="markdownIt-Anchor" href="#3-z3约束"></a> 3. Z3约束</h2>
+<h2 id="4-z3约束"><a class="markdownIt-Anchor" href="#4-z3约束"></a> 4. Z3约束</h2>
 <p>使用时的代码模板：</p>
 <pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> z3 <span class="hljs-keyword">import</span> *
 input=[BitVec(<span class="hljs-string">'input_%d'</span>%i,<span class="hljs-number">8</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>)]<span class="hljs-comment">#char input[32]</span>
